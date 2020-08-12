@@ -14,7 +14,7 @@ async def on_startup(dp):
     await on_startup_notify(dp)
     await set_default_commands(dp)
 
-    '''Пробую залить на гитхаб через пайчарм'''
+    '''Пробую залить на гитхаб через пайчарм и еще разок'''
 
 
 if __name__ == '__main__':
