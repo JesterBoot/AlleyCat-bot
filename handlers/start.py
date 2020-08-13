@@ -4,19 +4,20 @@ import sqlite3
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
 
-from keyboards.inline_kb import read_the_rules, apply_registration
+from keyboards.inline_kb import read_the_rules
 from loader import dp, db
+
+welcome_message = '''Добро пожаловать на CyberAlleycat!
+Блаблабла пару слов про гонку
+Перед началом регистрации прочитай правила гонки.'''
 
 
 @dp.message_handler(CommandStart())
-async def bot_help(message: types.Message):
-    await message.answer('Добро пожаловать на CyberAlleycat!\n'
-                         'Блаблабла пару слов про гонку\n'
-                         'Перед началом регистрации прочитай правила гонки.',
-                         reply_markup=read_the_rules)
+async def bot_help(message: types.Message):#добавить date и регистрация до вечера пятницы
+    await message.answer(welcome_message, reply_markup=read_the_rules)
 
-    name = message.from_user.first_name
-    second_name = message.from_user.last_name
+    # name = message.from_user.first_name
+    # second_name = message.from_user.last_name
     '''Добавляет юзера в базу данных при \старт'''
     # try:
     #     db.add_racer(id=message.from_user.id, name=name, second_name=second_name)

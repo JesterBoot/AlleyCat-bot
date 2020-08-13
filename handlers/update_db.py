@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.builtin import Command
 
 from loader import dp, db
-
+'''Осталось от урока sqlite'''
 
 @dp.message_handler(Command("email"))
 async def bot_start(message: types.Message, state: FSMContext):

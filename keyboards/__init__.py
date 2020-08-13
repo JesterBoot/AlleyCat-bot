@@ -1,3 +1,3 @@
-from handlers.registration import dp
+from loader import dp
 
 __all__ = ["dp"]
