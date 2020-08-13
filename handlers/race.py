@@ -8,7 +8,7 @@ from keyboards.inline_kb import got_the_point
 from keyboards.reply_kb import get_location_button
 from loader import dp
 
-'''расставить стейкты и разобраться с локацией''
+'''расставить стейкты и разобраться с локацией'''
 @dp.callback_query_handler(state=Race.First_point)
 async def get_location(call: CallbackQuery, state: FSMContext):
     await call.answer(cache_time=55)
