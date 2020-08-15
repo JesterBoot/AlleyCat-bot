@@ -33,6 +33,7 @@ async def reg(call: CallbackQuery, state: FSMContext):
 # выбор пола и кнопка выбора велосипеда
 @dp.callback_query_handler(state=Registration_form.Sex)
 async def choose_sex(call: CallbackQuery, state: FSMContext):
+    await call.answer(cache_time=1)
     answer = call.data
     await state.update_data(sex=answer)
     await call.message.edit_text(f'В какой категории участвуешь?', reply_markup=bicycle_type)
@@ -42,6 +43,7 @@ async def choose_sex(call: CallbackQuery, state: FSMContext):
 # выбор категории велосипеда кнопки выбора проверки ответов
 @dp.callback_query_handler(state=Registration_form.Bicycle_type)
 async def choose_bicycle_type(call: CallbackQuery, state: FSMContext):
+    await call.answer(cache_time=1)
     answer = call.data
     await state.update_data(bicycle_type=answer)
     data = await state.get_data()
@@ -64,6 +66,7 @@ async def choose_bicycle_type(call: CallbackQuery, state: FSMContext):
 # исправление ошибок при регистрации
 @dp.callback_query_handler(text='data_not_ok')
 async def pravki(call: CallbackQuery, state: FSMContext):
+    await call.answer(cache_time=1)
     await state.reset_data()
     await state.reset_state()
     await call.message.edit_text('Укажи еще раз свой пол:', reply_markup=gender)

@@ -1,13 +1,5 @@
 '''создать словарь списков с точками и локацией'''
 
-points = [
-    ('Christ the Savior', {
-        "lat": 55.744661,
-        "lon": 37.605473
-    }),
-    ('Izvarinskaya', {
-        'lat': 55.611,
-        'lon': 37.254
-    }),
-]
 
+MY_HOME = [55.61, 37.254]
+# 'Christ the Savior', {'latitude': 55.744, "longitude": 37.605},
