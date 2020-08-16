@@ -3,8 +3,11 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 
 class Race(StatesGroup):
     First_point = State()
-    Selfi_start_point = State()
-    Cathedral_of_the_Christ = State()
-    Selfi_second_point = State()
-    Senagoga = State()
-    '''Дописать стейты и нормально их назвать'''
+    Christ_the_savior = State()
+    Catholic_cathedral = State()
+    Allaah = State()
+    Seynagogue = State()
+    Evangelical = State()
+    Scientology = State()
+    Mosgorbike = State()
+    Finish = State()

@@ -47,3 +47,10 @@ are_you_ready = InlineKeyboardMarkup(row_width=2,
 got_the_point = InlineKeyboardMarkup(row_width=2,
                                      inline_keyboard=[
                                          [InlineKeyboardButton('Я на точке', callback_data='got_the_point')]])
+
+cycling_admin = InlineKeyboardMarkup(row_width=2,
+                                     inline_keyboard=[
+                                         [InlineKeyboardButton(text='Забанить', callback_data='ban'),
+                                          InlineKeyboardButton(text='Забанить',
+                                                               callback_data='ban_too')]
+                                     ])

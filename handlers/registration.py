@@ -77,11 +77,13 @@ async def pravki(call: CallbackQuery, state: FSMContext):
 @dp.callback_query_handler(text='data_ok')
 async def waiting_start(call: CallbackQuery, state: FSMContext):
     await call.message.edit_text(text='''
-Отлично, старт гонки - Изваринская ул, дом 1.
-Начало гонки 1го сентября в 12.10.
+Отлично, место старта гонки - Устьинский сквер, Памятник Пограничникам Отечества
+Сбор в 12.00, начало гонки в 12.10.
 Перед стартом, тебе придет сообщение от бота, так что не выключай оповещения.
 Не приезжай на точку старта слишком рано и пользуйся санитайзером.''')
-    time.sleep(3)  # изменить на date и поставить "будильник" до конца недели
-    await call.message.delete()
+    # time.sleep(5)  # изменить на date и поставить "будильник" до конца недели
+    # await call.answer("Регистрация до вечера\ночи пятницы. И потом уже на старте гонки придет сообщение⬇")
+    # time.sleep(5)
     await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
+    await call.answer(cache_time=1)
     await Race.First_point.set()
