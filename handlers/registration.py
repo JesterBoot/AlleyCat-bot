@@ -87,3 +87,6 @@ async def waiting_start(call: CallbackQuery, state: FSMContext):
     await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
     await call.answer(cache_time=1)
     await Race.First_point.set()
+
+
+

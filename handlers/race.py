@@ -22,7 +22,8 @@ async def get_location(call: CallbackQuery, state: FSMContext):
     await state.reset_state()
 
 
-'''не понимаю как распаковать дикт и как это внести '''
+'''все сделал в locations 
+нужно теперь переделалть стейты'''
 
 
 @dp.message_handler(content_types=types.ContentType.LOCATION)
@@ -121,7 +122,8 @@ async def got_selfie_allah(message: types.Message, state: FSMContext):
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Finish)
 async def got_selfie_allah(message: types.Message, state: FSMContext):
     await state.finish()
-    await message.answer('Поздравляю, ты добрался до последней точки')
+    await message.answer('Поздравляю, ты добрался до последней точки, готовься к награждению')
+    await message.answer_sticker(sticker='CAACAgIAAxkBAAEBNehfOYqypKm5tQW7ighPme49OflY7gACaAADq8pZIY2MuYKiZ0KSGgQ')
 
 
 @dp.callback_query_handler(text='got_the_point')
