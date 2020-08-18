@@ -50,7 +50,7 @@ got_the_point = InlineKeyboardMarkup(row_width=2,
 
 cycling_admin = InlineKeyboardMarkup(row_width=2,
                                      inline_keyboard=[
-                                         [InlineKeyboardButton(text='Забанить', callback_data='ban'),
-                                          InlineKeyboardButton(text='Забанить',
+                                         [InlineKeyboardButton(text='Забанить!', callback_data='ban'),
+                                          InlineKeyboardButton(text='Забанить!',
                                                                callback_data='ban_too')]
                                      ])
