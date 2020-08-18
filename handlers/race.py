@@ -29,10 +29,12 @@ async def get_location(call: CallbackQuery, state: FSMContext):
 @dp.message_handler(content_types=types.ContentType.LOCATION)
 async def selfie_query(message: types.Message):
     print(message.location)
-    latitute = float('{:.2f}'.format(message.location.latitude))
-    longitude = float('{:.2f}'.format(message.location.longitude))
-    print(float('{:.2f}'.format(message.location.latitude)), START_POINT[0])
-    print(float('{:.2f}'.format(message.location.longitude)), START_POINT[1])
+    for i, k in message.location:
+        message.location["latitude"] = float(f'{k:.3f}')
+        message.location["longitude"] = float(f'{k:.3f}')#идея верная, но нужно второе значение тоже заменить
+    print(message.location)
+    latitute = float('{:.3f}'.format(message.location.latitude))
+    longitude = float('{:.3f}'.format(message.location.longitude))
     if latitute == START_POINT[0] and longitude == START_POINT[1]:
         await message.answer('Ты на месте!\nДля подтверждения, отправь селфи')
         await Race.Christ_the_savior.set()
@@ -62,6 +64,7 @@ async def selfie_query(message: types.Message):
         await Race.Finish.set()
     else:
         await message.answer('Ты далеко от точки, попробуй еще раз', reply_markup=get_location_button)
+        print(latitute, longitude)
 
 
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Christ_the_savior)
