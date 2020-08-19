@@ -8,4 +8,4 @@ from utils.db.sqlite import Database
 bot = Bot(token=config.BOT_TOKEN, parse_mode=types.ParseMode.HTML)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
-db = Database()
+db = Database(loop=dp.loop)

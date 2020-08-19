@@ -1,2 +1,12 @@
-BOT_TOKEN = '1147769031:AAEvnrrHXuBwAaO71nE3LO4ojSKpAGFIuqA'
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+BOT_TOKEN = str(os.getenv("BOT_TOKEN"))
+PGUSER='postgres'
+PGPASSWORD='Pipiski987'
 admins = [412112889]
+
+ip = os.getenv("ip")
