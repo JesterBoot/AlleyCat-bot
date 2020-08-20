@@ -1,12 +1,10 @@
-import time
-
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
 
 from FSM.Race_states import Race
 from FSM.Registation_states import Registration_form
 from keyboards.inline_kb import bicycle_type, gender, apply_registration, check_reg_answer, are_you_ready
-from loader import dp
+from loader import dp, db
 
 '''Создать хендлеры группу коллбэков для каждого состояния'''
 
@@ -36,6 +34,7 @@ async def choose_sex(call: CallbackQuery, state: FSMContext):
     await call.answer(cache_time=1)
     answer = call.data
     await state.update_data(sex=answer)
+    await db.update_racer_gender(gender=answer, id=call.from_user.id)
     await call.message.edit_text(f'В какой категории участвуешь?', reply_markup=bicycle_type)
     await Registration_form.next()  # добавть пол в бд
 
@@ -45,6 +44,9 @@ async def choose_sex(call: CallbackQuery, state: FSMContext):
 async def choose_bicycle_type(call: CallbackQuery, state: FSMContext):
     await call.answer(cache_time=1)
     answer = call.data
+    await db.update_racer_bicycle(bicycle=answer, id=call.from_user.id)
+    racers = await db.select_all_racers()
+    print(f'Получил всех пользователей: {racers}')
     await state.update_data(bicycle_type=answer)
     data = await state.get_data()
     if data.get('sex') == 'male':
@@ -87,6 +89,3 @@ async def waiting_start(call: CallbackQuery, state: FSMContext):
     await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
     await call.answer(cache_time=1)
     await Race.First_point.set()
-
-
-

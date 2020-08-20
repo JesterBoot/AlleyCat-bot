@@ -19,7 +19,7 @@ async def get_location(call: CallbackQuery, state: FSMContext):
     await state.reset_state()
 
 
-#уловитель локации и сортировка по самой локации
+# уловитель локации и сортировка по самой локации
 @dp.message_handler(content_types=types.ContentType.LOCATION)
 async def selfie_query(message: types.Message):
     message.location["latitude"] = float(f'{message.location["latitude"]:.3f}')
@@ -55,11 +55,12 @@ async def selfie_query(message: types.Message):
         print(points['Устьинский сквер, Памятник Пограничникам Отечества'])  # оставлю для тестов
 
 
-#подверждение фото со стейтами
+# подверждение фото со стейтами
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Christ_the_savior)
 async def got_selfie_christ(message: types.Message, state: FSMContext):
     await state.reset_state()
-    await message.answer(f'Отличная фотка, дуй на следующую точку:\n{points}',
+    await message.answer('Отличная фотка, дуй на следующую точку:\n'
+                         'Храм Христа Спасителя',
                          reply_markup=got_the_point)
 
 
@@ -71,12 +72,14 @@ async def got_selfie_catholic(message: types.Message, state: FSMContext):
                          reply_markup=cycling_admin)
 
 
-@dp.message_handler(text='ban')
-@dp.message_handler(text='ban_too')
-async def got_banned(message: types.Message):
-    await message.answer('Все комментаторы забанены! Езжай на следующую точку:\n'
-                         'Римско-католический Кафедральный собор Непорочного Зачатия Пресвятой Девы Марии',
-                         reply_markup=got_the_point)
+@dp.callback_query_handler(text='ban')
+@dp.callback_query_handler(text='ban_too')
+async def got_banned(call: CallbackQuery):
+    await call.answer(cache_time=1)
+    await call.message.delete()
+    await call.message.answer('Все комментаторы забанены! Езжай на следующую точку:\n'
+                              'Римско-католический Кафедральный собор Непорочного Зачатия Пресвятой Девы Марии',
+                              reply_markup=got_the_point)
 
 
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Allaah)
@@ -126,7 +129,7 @@ async def got_selfie_finish(message: types.Message, state: FSMContext):
     await message.answer_sticker(sticker='CAACAgIAAxkBAAEBNehfOYqypKm5tQW7ighPme49OflY7gACaAADq8pZIY2MuYKiZ0KSGgQ')
 
 
-#запрос локации
+# запрос локации
 @dp.callback_query_handler(text='got_the_point')
 async def get_location(call: CallbackQuery, state: FSMContext):
     await call.answer(cache_time=3)

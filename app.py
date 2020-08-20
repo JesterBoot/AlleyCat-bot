@@ -1,20 +1,16 @@
+from loader import db
 from utils.set_bot_commands import set_default_commands
-# from loader import db
 
 
 async def on_startup(dp):
     from utils.notify_admins import on_startup_notify
-    # try:
-    #     db.create_table_racers()
-    # except Exception as e:
-    #     print('err')
-    # db.delete_racers()
-    # print(db.select_all_racers())
-
+    try:
+        await db.create_table_racers()
+    except Exception as e:
+        print('err')
+    await db.delete_racers()
     await on_startup_notify(dp)
     await set_default_commands(dp)
-
-
 
 
 if __name__ == '__main__':
