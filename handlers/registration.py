@@ -90,8 +90,8 @@ async def waiting_start(call: CallbackQuery, state: FSMContext):
     count = await db.count_racers()
     await call.message.answer(f'Регистрация окончена, всего зарегистрировано: {count} человек(а).')
     # time.sleep(5)
-        await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
-        await call.answer(cache_time=1)
-        await Race.First_point.set()
+    await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
+    await call.answer(cache_time=1)
+    await Race.First_point.set()
     # else:
     #     time.sleep()
