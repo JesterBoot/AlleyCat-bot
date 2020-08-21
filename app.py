@@ -4,11 +4,8 @@ from utils.set_bot_commands import set_default_commands
 
 async def on_startup(dp):
     from utils.notify_admins import on_startup_notify
-    try:
-        await db.create_table_racers()
-    except Exception as e:
-        print('err')
     await db.delete_racers()
+    await db.create_table_racers()
     await on_startup_notify(dp)
     await set_default_commands(dp)
 

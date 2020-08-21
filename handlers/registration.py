@@ -1,5 +1,6 @@
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
+from time import time, ctime
 
 from FSM.Race_states import Race
 from FSM.Registation_states import Registration_form
@@ -22,7 +23,7 @@ async def rules(call: CallbackQuery):
 
 # нажатие кнопки "Регистрация"
 @dp.callback_query_handler(text='start_reg')
-async def reg(call: CallbackQuery, state: FSMContext):
+async def reg(call: CallbackQuery):
     await call.message.edit_text(f'Привет {call.from_user.full_name}, укажи свой пол:',
                                  reply_markup=gender)
     await Registration_form.Sex.set()  # добавить имя пользоваиеля и @name в бд
@@ -36,7 +37,7 @@ async def choose_sex(call: CallbackQuery, state: FSMContext):
     await state.update_data(sex=answer)
     await db.update_racer_gender(gender=answer, id=call.from_user.id)
     await call.message.edit_text(f'В какой категории участвуешь?', reply_markup=bicycle_type)
-    await Registration_form.next()  # добавть пол в бд
+    await Registration_form.next()
 
 
 # выбор категории велосипеда кнопки выбора проверки ответов
@@ -44,9 +45,7 @@ async def choose_sex(call: CallbackQuery, state: FSMContext):
 async def choose_bicycle_type(call: CallbackQuery, state: FSMContext):
     await call.answer(cache_time=1)
     answer = call.data
-    await db.update_racer_bicycle(bicycle=answer, id=call.from_user.id)
-    racers = await db.select_all_racers()
-    print(f'Получил всех пользователей: {racers}')
+    await db.update_racer_bicycle(bicycle=answer, id=call.from_user.id)#добавление в бд
     await state.update_data(bicycle_type=answer)
     data = await state.get_data()
     if data.get('sex') == 'male':
@@ -60,9 +59,10 @@ async def choose_bicycle_type(call: CallbackQuery, state: FSMContext):
         bicycle = 'фиксы 🚲'
     else:
         bicycle = 'мульти/синглспид 🚴'
-
     await call.message.edit_text(f'{sex} категорию: {bicycle}', reply_markup=check_reg_answer)
-    await state.reset_state(with_data=False)  # занести все в бд
+    await state.reset_state(with_data=False)
+    racers = await db.select_all_racers()
+    print(f'Получил всех пользователей: {racers}')#проверка данных в бд, удалить после
 
 
 # исправление ошибок при регистрации
@@ -76,16 +76,22 @@ async def pravki(call: CallbackQuery, state: FSMContext):
 
 
 # информация о месте старта
-@dp.callback_query_handler(text='data_ok')
-async def waiting_start(call: CallbackQuery, state: FSMContext):
-    await call.message.edit_text(text='''
+info = '''
 Отлично, место старта гонки - Устьинский сквер, Памятник Пограничникам Отечества
 Сбор в 12.00, начало гонки в 12.10.
 Перед стартом, тебе придет сообщение от бота, так что не выключай оповещения.
-Не приезжай на точку старта слишком рано и пользуйся санитайзером.''')
+Не приезжай на точку старта слишком рано и пользуйся санитайзером.
+'''
+@dp.callback_query_handler(text='data_ok')
+async def waiting_start(call: CallbackQuery, state: FSMContext):
+    await call.message.edit_text(text=info)
     # time.sleep(5)  # изменить на date и поставить "будильник" до конца недели
-    # await call.answer("Регистрация до вечера\ночи пятницы. И потом уже на старте гонки придет сообщение⬇")
+    # if ctime(time()) == 'Fri Aug 21 15:12:00 2020':
+    count = await db.count_racers()
+    await call.message.answer(f'Регистрация окончена, всего зарегистрировано: {count} человек(а).')
     # time.sleep(5)
-    await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
-    await call.answer(cache_time=1)
-    await Race.First_point.set()
+        await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
+        await call.answer(cache_time=1)
+        await Race.First_point.set()
+    # else:
+    #     time.sleep()

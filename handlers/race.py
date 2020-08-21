@@ -1,12 +1,13 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
+import time
 
 from FSM.Race_states import Race
 from data.locations import points
 from keyboards.inline_kb import got_the_point, cycling_admin
 from keyboards.reply_kb import get_location_button
-from loader import dp
+from loader import dp, db
 
 
 # запрос локации на точке старта
@@ -49,10 +50,12 @@ async def selfie_query(message: types.Message):
     elif dict(message.location) == points['Mosgorbike']:
         await message.answer('Ты на месте!\nДля подтверждения, отправь селфи')
         await Race.Finish.set()
+        print(message.from_user.id)
+        print()
+        # time =
+        await db.finish_time(finish_time=time, id=message.from_user.id)
     else:
         await message.answer('Ты далеко от точки, попробуй еще раз', reply_markup=get_location_button)
-        print(dict(message.location))  # оставлю для тестов
-        print(points['Устьинский сквер, Памятник Пограничникам Отечества'])  # оставлю для тестов
 
 
 # подверждение фото со стейтами
@@ -131,7 +134,7 @@ async def got_selfie_finish(message: types.Message, state: FSMContext):
 
 # запрос локации
 @dp.callback_query_handler(text='got_the_point')
-async def get_location(call: CallbackQuery, state: FSMContext):
+async def get_location(call: CallbackQuery):
     await call.answer(cache_time=3)
     await call.message.delete()
     await call.message.answer('Отправь своё местоположение 🗺\nКнопка снизу ⬇️',

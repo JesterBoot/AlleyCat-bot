@@ -11,7 +11,7 @@ welcome_message = '''Добро пожаловать на CyberAlleycat!
 
 
 @dp.message_handler(CommandStart())
-async def bot_help(message: types.Message):#добавить date и регистрация до вечера пятницы
+async def bot_help(message: types.Message):
     await message.answer(welcome_message, reply_markup=read_the_rules)
     name = message.from_user.full_name
     await db.add_racer(id=message.from_user.id, name=name)
