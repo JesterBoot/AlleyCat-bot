@@ -1,16 +1,18 @@
+from datetime import datetime
+
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
-import time
+
 
 from FSM.Race_states import Race
 from data.locations import points
 from keyboards.inline_kb import got_the_point, cycling_admin
-from keyboards.reply_kb import get_location_button
+from keyboards.reply_kb import get_location_button, remove_keyboard
 from loader import dp, db
 
 
-# запрос локации на точке старта
+'''запрос локации на точке старта'''
 @dp.callback_query_handler(state=Race.First_point)
 async def get_location(call: CallbackQuery, state: FSMContext):
     await call.answer(cache_time=3)
@@ -20,15 +22,15 @@ async def get_location(call: CallbackQuery, state: FSMContext):
     await state.reset_state()
 
 
-# уловитель локации и сортировка по самой локации
+'''уловитель локации и сортировка по самой локации'''
 @dp.message_handler(content_types=types.ContentType.LOCATION)
-async def selfie_query(message: types.Message):
+async def selfie_query(message: types.Message, state: FSMContext):
     message.location["latitude"] = float(f'{message.location["latitude"]:.3f}')
     message.location["longitude"] = float(f'{message.location["longitude"]:.3f}')
     if dict(message.location) == points['Устьинский сквер, Памятник Пограничникам Отечества']:
         await message.answer('Ты на месте!\nДля подтверждения, отправь селфи')
         await Race.Christ_the_savior.set()
-    elif dict(message.location) == points['Христа Спасителя']:
+    elif dict(message.location) == points['Церковь Спаса Преображения в комплексе храма Христа Спасителя']:
         await message.answer('Ты на месте!\nДля подтверждения, отправь селфи')
         await Race.Catholic_cathedral.set()
     elif dict(message.location) == points['Римско-католический Кафедральный собор Непорочного ' \
@@ -51,19 +53,21 @@ async def selfie_query(message: types.Message):
         await message.answer('Ты на месте!\nДля подтверждения, отправь селфи')
         await Race.Finish.set()
         print(message.from_user.id)
-        print()
-        # time =
+        time = str(datetime.now())
+        print(time)
         await db.finish_time(finish_time=time, id=message.from_user.id)
     else:
         await message.answer('Ты далеко от точки, попробуй еще раз', reply_markup=get_location_button)
+        print(message.location)
+        print(await state.get_state())
 
 
-# подверждение фото со стейтами
+'''подверждение фото со стейтами'''
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Christ_the_savior)
 async def got_selfie_christ(message: types.Message, state: FSMContext):
     await state.reset_state()
     await message.answer('Отличная фотка, дуй на следующую точку:\n'
-                         'Храм Христа Спасителя',
+                         'Церковь Спаса Преображения в комплексе храма Христа Спасителя',
                          reply_markup=got_the_point)
 
 
@@ -128,11 +132,12 @@ async def got_selfie_mosgorbike(message: types.Message, state: FSMContext):
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Finish)
 async def got_selfie_finish(message: types.Message, state: FSMContext):
     await state.finish()
-    await message.answer('Поздравляю, ты добрался до последней точки, готовься к награждению!')
+    await message.answer('Поздравляю, ты добрался до последней точки, готовься к награждению!',
+                         reply_markup=remove_keyboard)
     await message.answer_sticker(sticker='CAACAgIAAxkBAAEBNehfOYqypKm5tQW7ighPme49OflY7gACaAADq8pZIY2MuYKiZ0KSGgQ')
 
 
-# запрос локации
+'''запрос локации'''
 @dp.callback_query_handler(text='got_the_point')
 async def get_location(call: CallbackQuery):
     await call.answer(cache_time=3)

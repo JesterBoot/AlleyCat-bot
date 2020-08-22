@@ -1,6 +1,9 @@
+import asyncio
+
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
 from time import time, ctime
+import datetime
 
 from FSM.Race_states import Race
 from FSM.Registation_states import Registration_form
@@ -19,6 +22,7 @@ rule = '''Нельзя ехать на машине
 async def rules(call: CallbackQuery):
     await call.answer(cache_time=55)
     await call.message.edit_text(f'{rule}', reply_markup=apply_registration)
+
 
 
 # нажатие кнопки "Регистрация"
@@ -85,13 +89,17 @@ info = '''
 @dp.callback_query_handler(text='data_ok')
 async def waiting_start(call: CallbackQuery, state: FSMContext):
     await call.message.edit_text(text=info)
-    # time.sleep(5)  # изменить на date и поставить "будильник" до конца недели
-    # if ctime(time()) == 'Fri Aug 21 15:12:00 2020':
+
+    # while ctime() != 'Sat Aug 22 09:35:00 2020':
+    #     await asyncio.sleep(1)
+    # else:
     count = await db.count_racers()
     await call.message.answer(f'Регистрация окончена, всего зарегистрировано: {count} человек(а).')
-    # time.sleep(5)
-    await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
-    await call.answer(cache_time=1)
-    await Race.First_point.set()
+
+    # while ctime() != 'Sat Aug 22 11:35:00 2020':
+    #     await asyncio.sleep(1)
     # else:
-    #     time.sleep()
+    await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
+    await Race.First_point.set()
+
+

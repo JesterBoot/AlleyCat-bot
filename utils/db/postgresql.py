@@ -12,6 +12,7 @@ class Database:
                                 host=config.ip))
 
     '''Таблица для регистрации всех гонщиков'''
+
     async def create_table_racers(self):
         sql = """
         CREATE TABLE IF NOT EXISTS Racers (
@@ -19,36 +20,13 @@ class Database:
                 Name VARCHAR (255) NOT NULL,
                 Gender VARCHAR (255),
                 Bicycle VARCHAR (255),
+                Start_time VARCHAR (255),
                 Finish_time VARCHAR (255),
+                Total VARCHAR (255),
                 PRIMARY KEY (id)
                 );
         """
         await self.pool.execute(sql)
-
-    # async def create_table_check_points(self):
-    #     sql = '''
-    #     CREATE TABLE IF NOT EXISTS Racers (
-    #     id INT NOT NULL,
-    #     First_location BOOLEAN,
-    #     First_photo VARCHAR (255),
-    #     Second_location BOOLEAN,
-    #     Second_photo VARCHAR (255),
-    #     Third_location BOOLEAN,
-    #     Third_photo VARCHAR (255),
-    #     Fourth_location BOOLEAN,
-    #     Fourth_photo VARCHAR (255),
-    #     Fifth_location BOOLEAN,
-    #     Fifth_photo VARCHAR (255),
-    #     Sixth_location BOOLEAN,
-    #     Sixth_photo VARCHAR (255),
-    #     Seventh_location BOOLEAN,
-    #     Seventh_photo VARCHAR (255),
-    #     Eighth_location BOOLEAN,
-    #     Eighth_photo VARCHAR (255),
-    #     Time VARCHAR (255),
-    #     PRIMARY KEY(id));
-    #     '''
-    #     await self.pool.execute(sql)
 
     @staticmethod
     def format_args(sql, parameters: dict):
@@ -91,31 +69,28 @@ class Database:
         '''
         return await self.pool.execute(sql, bicycle, id)
 
+    async def start_time(self, start_time: str, id: int):
+        sql = '''
+        UPDATE Racers SET Start_time = $1 WHERE id =$2
+        '''
+        return await self.pool.execute(sql, start_time, id)
+
     async def finish_time(self, finish_time: str, id: int):
         sql = '''
         UPDATE Racers SET Finish_time = $1 WHERE id =$2
         '''
         return await self.pool.execute(sql, finish_time, id)
 
+    async def total(self, total: str, id: int):
+        sql = '''
+        UPDATE Racers SET Total = $1 WHERE id =$2
+        '''
+        return await self.pool.execute(sql, total, id)
+
     async def delete_racers(self):
         await self.pool.execute('DELETE FROM Racers WHERE True')
 
-    # async def delete_table(self):
-    #     await self.pool.execute('DROP TABLE Racers')
+    async def delete_table(self):
+        await self.pool.execute('DROP TABLE Racers')
 
-    # async def add_point(self, id: int, first_location: bool = None, first_photo: str = None,
-    #                     second_location: bool = None, second_photo: str = None, third_location: bool = None,
-    #                     third_photo: str = None, fourth_location: bool = None, fourth_photo: str = None,
-    #                     fifth_location: bool = None, fifth_photo: str = None, sixth_location: bool = None,
-    #                     sixth_photo: str = None, seventh_location: bool = None, seventh_photo: str = None,
-    #                     eight_location: bool = None, eight_photo: str = None, time: str = None):
-    #     sql = '''
-    #     INSERT INTO (id, first_location, first_photo, second_location,
-    #     second_photo, third_location, third_photo, fourth_location, fourth_photo, fifth_location, fifth_photo,
-    #     sixth_location, sixth_photo, seventh_location, seventh_photo, eight_location, eight_photo, time)
-    #     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22)
-    #     '''
-    #     await self.pool.execute(sql, id, first_location, first_photo, second_location, second_photo,
-    #                             third_location, third_photo, fourth_location, fourth_photo, fifth_location,
-    #                             fifth_photo, sixth_location, sixth_photo, seventh_location, seventh_photo,
-    #                             eight_location, eight_photo, time)
+
