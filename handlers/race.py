@@ -4,13 +4,11 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
 
-
 from FSM.Race_states import Race
 from data.locations import points
 from keyboards.inline_kb import got_the_point, cycling_admin
 from keyboards.reply_kb import get_location_button, remove_keyboard
 from loader import dp, db
-
 
 '''запрос локации на точке старта'''
 @dp.callback_query_handler(state=Race.First_point)
@@ -66,15 +64,23 @@ async def selfie_query(message: types.Message, state: FSMContext):
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Christ_the_savior)
 async def got_selfie_christ(message: types.Message, state: FSMContext):
     await state.reset_state()
-    await message.answer('Отличная фотка, дуй на следующую точку:\n'
-                         'Церковь Спаса Преображения в комплексе храма Христа Спасителя',
+    await message.answer('Отличная фотка, дуй на следующую точку:\n\n'
+                         '<code>Церковь Спаса Преображения в комплексе храма Христа Спасителя</code>',
                          reply_markup=got_the_point)
 
 
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Catholic_cathedral)
 async def got_selfie_catholic(message: types.Message, state: FSMContext):
     await state.reset_state()
-    await message.answer('А теперь представь, что ты админ цуклинга.\n'
+    await message.answer('Отличная фотка, дуй на следующую точку:\n\n'
+                         '<code>Римско-католический Кафедральный собор Непорочного Зачатия Пресвятой Девы Марии</code>',
+                         reply_markup=got_the_point)
+
+
+@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Allaah)
+async def got_selfie_allah(message: types.Message, state: FSMContext):
+    await state.reset_state()
+    await message.answer('А теперь представь, что ты админ цуклинга.\n\n'
                          'У тебя на стене оставили комментарий, что ты сделаешь?',
                          reply_markup=cycling_admin)
 
@@ -84,40 +90,32 @@ async def got_selfie_catholic(message: types.Message, state: FSMContext):
 async def got_banned(call: CallbackQuery):
     await call.answer(cache_time=1)
     await call.message.delete()
-    await call.message.answer('Все комментаторы забанены! Езжай на следующую точку:\n'
-                              'Римско-католический Кафедральный собор Непорочного Зачатия Пресвятой Девы Марии',
+    await call.message.answer('Все комментаторы забанены! Езжай на следующую точку:\n\n'
+                              '<code>Московская соборная мечеть</code>',
                               reply_markup=got_the_point)
-
-
-@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Allaah)
-async def got_selfie_allah(message: types.Message, state: FSMContext):
-    await state.reset_state()
-    await message.answer('Отличная фотка, дуй на следующую точку:\n'
-                         'Московская соборная мечеть',
-                         reply_markup=got_the_point)
 
 
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Seynagogue)
 async def got_selfie_seynagogue(message: types.Message, state: FSMContext):
     await state.reset_state()
-    await message.answer('Отличная фотка, дуй на следующую точку:\n'
-                         'Московская хоральная синагога',
+    await message.answer('Отличная фотка, дуй на следующую точку:\n\n'
+                         '<code>Московская хоральная синагога</code>',
                          reply_markup=got_the_point)
 
 
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Evangelical)
 async def got_selfie_evangelical(message: types.Message, state: FSMContext):
     await state.reset_state()
-    await message.answer('Отличная фотка, дуй на следующую точку:\n'
-                         'Евангелическо-лютеранский кафедральный собор святых Петра и Павла',
+    await message.answer('Отличная фотка, дуй на следующую точку:\n\n'
+                         '<code>Евангелическо-лютеранский кафедральный собор святых Петра и Павла</code>',
                          reply_markup=got_the_point)
 
 
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Scientology)
 async def got_selfie_scientology(message: types.Message, state: FSMContext):
     await state.reset_state()
-    await message.answer('Отличная фотка, дуй на следующую точку:\n'
-                         'Московская саентологическая церковь',
+    await message.answer('Отличная фотка, дуй на следующую точку:\n\n'
+                         '<code>Московская саентологическая церковь</code>',
                          reply_markup=got_the_point)
 
 
@@ -125,7 +123,7 @@ async def got_selfie_scientology(message: types.Message, state: FSMContext):
 async def got_selfie_mosgorbike(message: types.Message, state: FSMContext):
     await state.reset_state()
     await message.answer('Отличная фотка, дуй на следующую точку:\n'
-                         'Mosgorbike',
+                         '<code>Mosgorbike</code>',
                          reply_markup=got_the_point)
 
 

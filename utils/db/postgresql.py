@@ -22,7 +22,7 @@ class Database:
                 Bicycle VARCHAR (255),
                 Start_time VARCHAR (255),
                 Finish_time VARCHAR (255),
-                Total VARCHAR (255),
+                Total_time VARCHAR (255),
                 PRIMARY KEY (id)
                 );
         """
@@ -81,9 +81,9 @@ class Database:
         '''
         return await self.pool.execute(sql, finish_time, id)
 
-    async def total(self, total: str, id: int):
+    async def total_time(self, total: str, id: int):
         sql = '''
-        UPDATE Racers SET Total = $1 WHERE id =$2
+        UPDATE Racers SET Total_time = $1 WHERE id =$2
         '''
         return await self.pool.execute(sql, total, id)
 

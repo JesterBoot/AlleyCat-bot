@@ -10,18 +10,24 @@ from FSM.Registation_states import Registration_form
 from keyboards.inline_kb import bicycle_type, gender, apply_registration, check_reg_answer, are_you_ready
 from loader import dp, db
 
-'''Создать хендлеры группу коллбэков для каждого состояния'''
 
-rule = '''Нельзя ехать на машине
-Можно ехать на велосипеде и тд
-Я согласен с условиями и готов регистрироваться'''
+
+rules = '''
+Нельзя ехать на машине
+Можно ехать на велосипеде и тд\n
+Для быстрого копирования названия точки, ты можешь просто нажать на на текст и он скопируется, на этом примере:\n
+<code>Улица Пушкина, дом Колотушкина</code>\n
+Таким образом, ты можешь быстро копировать название точки и вставлять его в поисковике на картах.\n
+Для подверждения, нужно будет отправлять селфи  или фото твоего велосипеда с объектом на заднем фоне.\n
+Cогласен с условиями и готов к регистрации.
+'''
 
 
 # нажатие кнопки правила
 @dp.callback_query_handler(text='rules')
 async def rules(call: CallbackQuery):
     await call.answer(cache_time=55)
-    await call.message.edit_text(f'{rule}', reply_markup=apply_registration)
+    await call.message.edit_text(f'{rules}', reply_markup=apply_registration)
 
 
 
@@ -81,20 +87,20 @@ async def pravki(call: CallbackQuery, state: FSMContext):
 
 # информация о месте старта
 info = '''
-Отлично, место старта гонки - Устьинский сквер, Памятник Пограничникам Отечества
-Сбор в 12.00, начало гонки в 12.10.
-Перед стартом, тебе придет сообщение от бота, так что не выключай оповещения.
-Не приезжай на точку старта слишком рано и пользуйся санитайзером.
+<code>Устьинский сквер, Памятник Пограничникам Отечества</code>\n
+Сбор 01.01.2020 в 12.00, начало гонки в 12.10.
+Перед стартом, тебе придет сообщение от бота, так что <b>не выключай</b> оповещения.
+Не забывай пользоваться санитайзером.
 '''
 @dp.callback_query_handler(text='data_ok')
 async def waiting_start(call: CallbackQuery, state: FSMContext):
-    await call.message.edit_text(text=info)
+    await call.message.edit_text(text='Отлично, место старта гонки:\n' + info)
 
     # while ctime() != 'Sat Aug 22 09:35:00 2020':
     #     await asyncio.sleep(1)
     # else:
-    count = await db.count_racers()
-    await call.message.answer(f'Регистрация окончена, всего зарегистрировано: {count} человек(а).')
+    # count = await db.count_racers()
+    # await call.message.answer(f'Регистрация окончена, всего зарегистрировано: {count} человек(а).')
 
     # while ctime() != 'Sat Aug 22 11:35:00 2020':
     #     await asyncio.sleep(1)
