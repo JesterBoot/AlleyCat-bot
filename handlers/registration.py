@@ -12,10 +12,10 @@ from loader import dp, db
 
 
 
-rules = '''
+rule = '''
 Нельзя ехать на машине
 Можно ехать на велосипеде и тд\n
-Для быстрого копирования названия точки, ты можешь просто нажать на на текст и он скопируется, на этом примере:\n
+Для быстрого копирования названия точки ты можешь просто нажать на текст и он скопируется, как на этом примере:\n
 <code>Улица Пушкина, дом Колотушкина</code>\n
 Таким образом, ты можешь быстро копировать название точки и вставлять его в поисковике на картах.\n
 Для подверждения, нужно будет отправлять селфи  или фото твоего велосипеда с объектом на заднем фоне.\n
@@ -27,7 +27,7 @@ Cогласен с условиями и готов к регистрации.
 @dp.callback_query_handler(text='rules')
 async def rules(call: CallbackQuery):
     await call.answer(cache_time=55)
-    await call.message.edit_text(f'{rules}', reply_markup=apply_registration)
+    await call.message.edit_text(f'{rule}', reply_markup=apply_registration)
 
 
 
@@ -90,7 +90,6 @@ info = '''
 <code>Устьинский сквер, Памятник Пограничникам Отечества</code>\n
 Сбор 01.01.2020 в 12.00, начало гонки в 12.10.
 Перед стартом, тебе придет сообщение от бота, так что <b>не выключай</b> оповещения.
-Не забывай пользоваться санитайзером.
 '''
 @dp.callback_query_handler(text='data_ok')
 async def waiting_start(call: CallbackQuery, state: FSMContext):
@@ -102,7 +101,7 @@ async def waiting_start(call: CallbackQuery, state: FSMContext):
     # count = await db.count_racers()
     # await call.message.answer(f'Регистрация окончена, всего зарегистрировано: {count} человек(а).')
 
-    # while ctime() != 'Sat Aug 22 11:35:00 2020':
+    # while ctime() != 'Sat Aug 22 12:10:00 2020':
     #     await asyncio.sleep(1)
     # else:
     await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)

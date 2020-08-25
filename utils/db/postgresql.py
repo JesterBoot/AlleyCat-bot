@@ -12,7 +12,6 @@ class Database:
                                 host=config.ip))
 
     '''Таблица для регистрации всех гонщиков'''
-
     async def create_table_racers(self):
         sql = """
         CREATE TABLE IF NOT EXISTS Racers (
@@ -81,11 +80,17 @@ class Database:
         '''
         return await self.pool.execute(sql, finish_time, id)
 
-    async def total_time(self, total: str, id: int):
+    async def total_time(self, total_time: str, id: int):
         sql = '''
-        UPDATE Racers SET Total_time = $1 WHERE id =$2
+        UPDATE Racers SET Total_time = $1 WHERE id = $2
         '''
-        return await self.pool.execute(sql, total, id)
+        return await self.pool.execute(sql, total_time, id)
+
+    async def check_male_winners(self):#Gender=male
+        sql = '''
+        SELECT * FROM Racers ORDER BY Total_time
+        '''
+        return await self.pool.fetchval(sql)
 
     async def delete_racers(self):
         await self.pool.execute('DELETE FROM Racers WHERE True')
