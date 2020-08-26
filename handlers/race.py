@@ -5,7 +5,6 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
 
 from FSM.Race_states import Race
-from data.config import admins
 from data.locations import points
 from keyboards.inline_kb import got_the_point, cycling_admin
 from keyboards.reply_kb import get_location_button, remove_keyboard
@@ -137,10 +136,6 @@ async def got_selfie_finish(message: types.Message, state: FSMContext):
     await message.answer('Поздравляю, ты добрался до последней точки, готовься к награждению!',
                          reply_markup=remove_keyboard)
     await message.answer_sticker(sticker='CAACAgIAAxkBAAEBNehfOYqypKm5tQW7ighPme49OflY7gACaAADq8pZIY2MuYKiZ0KSGgQ')
-    for admin in admins:
-        male_winners = await db.check_male_winners()
-        await dp.bot.send_message(admin, f'Pobediteli: {male_winners}')
-
 
 
 

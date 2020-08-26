@@ -8,7 +8,10 @@ async def on_startup(dp):
         await db.delete_racers()
     except:
         pass
-    await db.create_table_racers()
+    try:
+        await db.create_table_racers()
+    except:
+        pass
     await on_startup_notify(dp)
     await set_default_commands(dp)
 
