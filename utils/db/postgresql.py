@@ -98,7 +98,7 @@ class Database:
     '''Попытка достать 3х победителей'''
     async def male_fixie_winners(self):
         sql = '''
-        SELECT (name, total_time)
+        SELECT name, total_time
         FROM racers
         WHERE gender = 'male' AND bicycle = 'fixie'
         ORDER BY total_time

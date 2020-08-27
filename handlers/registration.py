@@ -72,7 +72,7 @@ async def choose_bicycle_type(call: CallbackQuery, state: FSMContext):
     await call.message.edit_text(f'{sex} категорию: {bicycle}', reply_markup=check_reg_answer)
     await state.reset_state(with_data=False)
     racers = await db.select_all_racers()
-    print(f'Получил всех пользователей: {racers}')#проверка данных в бд, удалить после
+    print(f'Получил всех пользователей: {racers}')#проверка данных в бд
 
 
 # исправление ошибок при регистрации
