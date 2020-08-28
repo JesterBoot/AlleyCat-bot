@@ -37,7 +37,7 @@ class Database:
     '''Добавление гонщика'''
     async def add_racer(self, id: int, name: str):
         sql = """
-        INSERT INTO Racers(id, Name) VALUES ($1, $2)
+        INSERT INTO Racers (id, Name) VALUES ($1, $2)
         """
         await self.pool.execute(sql, id, name)
 
