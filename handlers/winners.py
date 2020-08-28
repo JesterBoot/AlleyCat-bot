@@ -60,8 +60,10 @@ async def winners_multispeed(dp: Dispatcher):
 @dp.message_handler(Command('results'))
 async def racers_time(message: types.Message):
     result = ''
+    place = 0
     racers_time = dict(await db.all_racers_time())
     for key, value in racers_time.items():
         result += key + ' - '
         result += value + '\n'
-    await message.answer(f'Общий зачет:\n\n{result}')
+        place += 1
+    await message.answer(f'Общий зачет:\n\n{place} - {result}')
