@@ -9,4 +9,5 @@ from loader import dp
 
 @dp.message_handler(CommandHelp())
 async def bot_help(message: types.Message):
-    await message.answer('Если ты потерялся совсем, то блблабла')
+    await message.answer('Никак не можешь отправить правильную локацию?\n'
+                         'Пиши в лс @GeorgeBi')

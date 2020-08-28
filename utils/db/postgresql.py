@@ -108,7 +108,7 @@ class Database:
 
     async def female_fixie_winners(self):
         sql = '''
-        SELECT (name, total_time) 
+        SELECT name, total_time 
         FROM racers 
         WHERE gender = 'female' AND bicycle = 'fixie'
         ORDER BY total_time
@@ -118,7 +118,7 @@ class Database:
 
     async def male_multispeed_winners(self):
         sql = '''
-        SELECT (name, total_time) 
+        SELECT name, total_time 
         FROM racers 
         WHERE gender = 'male' AND bicycle = 'multispeed'
         ORDER BY total_time
@@ -128,7 +128,7 @@ class Database:
 
     async def female_multispeed_winners(self):
         sql = '''
-        SELECT (name, total_time) 
+        SELECT name, total_time
         FROM racers 
         WHERE gender = 'female' AND bicycle = 'multispeed'
         ORDER BY total_time
@@ -138,7 +138,7 @@ class Database:
 
     async def all_racers_time(self):
         sql = '''
-        SELECT (name, total_time) 
+        SELECT name, total_time 
         FROM racers 
         ORDER BY total_time
         '''
