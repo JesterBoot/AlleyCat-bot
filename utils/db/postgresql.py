@@ -11,7 +11,7 @@ class Database:
                                 password=config.PGPASSWORD,
                                 host=config.ip))
 
-    '''Таблица для регистрации всех гонщиков'''
+    #таблица для регистрации всех гонщиков
     async def create_table_racers(self):
         sql = """
         CREATE TABLE IF NOT EXISTS Racers (
@@ -34,21 +34,21 @@ class Database:
         ])
         return sql, tuple(parameters.values())
 
-    '''Добавление гонщика'''
+    #добавление гонщика
     async def add_racer(self, id: int, name: str):
         sql = """
         INSERT INTO Racers (id, Name) VALUES ($1, $2)
         """
         await self.pool.execute(sql, id, name)
 
-    '''Выбор всех гонщиков'''
+    #выбор всех гонщиков
     async def select_all_racers(self):
         sql = """
         SELECT * FROM Racers
         """
         return await self.pool.fetch(sql)
 
-    '''Выбор 1го гонщика'''
+    #выбор одного гонщика
     async def select_racer(self, **kwargs):
         sql = """
         SELECT * FROM Racers WHERE 
@@ -56,46 +56,45 @@ class Database:
         sql, parameters = self.format_args(sql, kwargs)
         return await self.pool.fetchrow(sql, *parameters)
 
-    '''Всего гонщиков'''
+    #всего гонщиков
     async def count_racers(self):
         return await self.pool.fetchval("SELECT COUNT (*) FROM Racers")
 
-    '''Обновление пола гонщика'''
+    #обновление пола при регистрации
     async def update_racer_gender(self, gender: str, id: int):
         sql = '''
         UPDATE Racers SET Gender = $1 WHERE id =$2
         '''
         return await self.pool.execute(sql, gender, id)
 
-    '''Обновление типа велосипеда'''
+    #обновление типа велосипеда
     async def update_racer_bicycle(self, bicycle: str, id: int):
         sql = '''
         UPDATE Racers SET Bicycle = $1 WHERE id =$2
         '''
         return await self.pool.execute(sql, bicycle, id)
 
-    '''Время старта'''
+    #время старта
     async def start_time(self, start_time: str, id: int):
         sql = '''
         UPDATE Racers SET Start_time = $1 WHERE id =$2
         '''
         return await self.pool.execute(sql, start_time, id)
 
-    '''Время финиша'''
+    #время финиша
     async def finish_time(self, finish_time: str, id: int):
         sql = '''
         UPDATE Racers SET Finish_time = $1 WHERE id =$2
         '''
         return await self.pool.execute(sql, finish_time, id)
 
-    '''Время гонки'''
+    #время гонки
     async def total_time(self, total_time: str, id: int):
         sql = '''
         UPDATE Racers SET Total_time = $1 WHERE id = $2
         '''
         return await self.pool.execute(sql, total_time, id)
 
-    '''Попытка достать 3х победителей'''
     async def male_fixie_winners(self):
         sql = '''
         SELECT name, total_time

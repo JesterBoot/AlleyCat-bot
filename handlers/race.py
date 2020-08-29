@@ -10,7 +10,7 @@ from keyboards.inline_kb import got_the_point, cycling_admin
 from keyboards.reply_kb import get_location_button, remove_keyboard
 from loader import dp, db
 
-'''запрос локации на точке старта'''
+#запрос локации на точке старта
 @dp.callback_query_handler(state=Race.First_point)
 async def get_location(call: CallbackQuery, state: FSMContext):
     await call.answer(cache_time=3)
@@ -20,7 +20,7 @@ async def get_location(call: CallbackQuery, state: FSMContext):
     await state.reset_state()
 
 
-'''уловитель локации и сортировка по самой локации'''
+#уловитель локации и сортировка по самой локации
 @dp.message_handler(content_types=types.ContentType.LOCATION)
 async def selfie_query(message: types.Message, state: FSMContext):
     message.location["latitude"] = float(f'{message.location["latitude"]:.3f}')
@@ -56,7 +56,7 @@ async def selfie_query(message: types.Message, state: FSMContext):
         print(await state.get_state())
 
 
-'''подверждение фото со стейтами'''
+#подверждение фото со стейтами
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Christ_the_savior)
 async def got_selfie_christ(message: types.Message, state: FSMContext):
     await state.reset_state()
@@ -139,7 +139,7 @@ async def got_selfie_finish(message: types.Message, state: FSMContext):
 
 
 
-'''запрос локации'''
+#запрос локации
 @dp.callback_query_handler(text='got_the_point')
 async def get_location(call: CallbackQuery):
     await call.answer(cache_time=3)
