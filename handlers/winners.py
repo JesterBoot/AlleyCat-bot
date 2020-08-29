@@ -6,7 +6,7 @@ from aiogram.dispatcher.filters.builtin import Command
 from data.config import admins
 from loader import dp, db
 
-'''Победители фиксы'''
+#победители фиксы
 @dp.message_handler(Command('winners_fixie'))
 async def winners_fixie(dp: Dispatcher):
     male_result = ''
@@ -31,7 +31,7 @@ async def winners_fixie(dp: Dispatcher):
         await dp.bot.send_message(admin, text=f'Победители фиксы, женский зачет:\n{female_result}')
 
 
-'''Победители мульти/сингл спид'''
+#победители мульти/сингл спид
 @dp.message_handler(Command('winners_multi'))
 async def winners_multispeed(dp: Dispatcher):
     male_result = ''
@@ -56,14 +56,17 @@ async def winners_multispeed(dp: Dispatcher):
         await dp.bot.send_message(admin, text=f'Победители мультиспид/синглы, женский зачет:\n{female_result}')
 
 
-'''Посмотреть общий зачет гонки'''
+# общий зачет гонки
 @dp.message_handler(Command('results'))
 async def racers_time(message: types.Message):
     result = ''
     place = 0
-    racers_time = dict(await db.all_racers_time())
-    for key, value in racers_time.items():
-        result += key + ' - '
-        result += value + '\n'
-        place += 1
-    await message.answer(f'Общий зачет:\n\n{place} - {result}')
+    try:
+        racers_time = dict(await db.all_racers_time())
+        for key, value in racers_time.items():
+            result += key + ' - '
+            result += value + '\n'
+            place += 1
+        await message.answer(f'Общий зачет:\n\n{place} - {result}')
+    except:
+        await message.answer(f'Пока никто не финишировал')
