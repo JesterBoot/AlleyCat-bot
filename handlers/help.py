@@ -1,4 +1,4 @@
-'''Хендлер при нажатии команды /help'''
+#хендлер при нажатии команды /help
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandHelp
 

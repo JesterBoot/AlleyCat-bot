@@ -7,20 +7,9 @@ import datetime
 
 from FSM.Race_states import Race
 from FSM.Registation_states import Registration_form
+from data.text_messages import start_info, rule
 from keyboards.inline_kb import bicycle_type, gender, apply_registration, check_reg_answer, are_you_ready
 from loader import dp, db
-
-
-
-rule = '''
-Нельзя ехать на машине
-Можно ехать на велосипеде и тд\n
-Для подверждения, нужно будет отправлять селфи  или фото твоего велосипеда с объектом на заднем фоне.\n
-Если у тебя не айфон, то ты можешь копировать название точки по нажатию на текст, как на этом примере:\n
-<code>Улица Пушкина, дом Колотушкина</code>\n
-Таким образом, ты можешь быстро копировать название точки и вставлять его в поисковике на картах.\n
-Cогласен с условиями и готов к регистрации.
-'''
 
 
 # нажатие кнопки правила
@@ -28,7 +17,6 @@ Cогласен с условиями и готов к регистрации.
 async def rules(call: CallbackQuery):
     await call.answer(cache_time=55)
     await call.message.edit_text(f'{rule}', reply_markup=apply_registration)
-
 
 
 # нажатие кнопки "Регистрация"
@@ -55,7 +43,7 @@ async def choose_sex(call: CallbackQuery, state: FSMContext):
 async def choose_bicycle_type(call: CallbackQuery, state: FSMContext):
     await call.answer(cache_time=1)
     answer = call.data
-    await db.update_racer_bicycle(bicycle=answer, id=call.from_user.id)#добавление в бд
+    await db.update_racer_bicycle(bicycle=answer, id=call.from_user.id)  # добавление в бд
     await state.update_data(bicycle_type=answer)
     data = await state.get_data()
     if data.get('sex') == 'male':
@@ -72,7 +60,7 @@ async def choose_bicycle_type(call: CallbackQuery, state: FSMContext):
     await call.message.edit_text(f'{sex} категорию: {bicycle}', reply_markup=check_reg_answer)
     await state.reset_state(with_data=False)
     racers = await db.select_all_racers()
-    print(f'Получил всех пользователей: {racers}')#проверка данных в бд
+    print(f'Получил всех пользователей: {racers}')  # проверка данных в бд
 
 
 # исправление ошибок при регистрации
@@ -86,27 +74,20 @@ async def pravki(call: CallbackQuery, state: FSMContext):
 
 
 # информация о месте старта
-info = '''
-<code>Устьинский сквер, Памятник Пограничникам Отечества</code>\n
-Сбор 01.01.2020 в 12.00, начало гонки в 12.10.\n
-Перед стартом, тебе придет сообщение от бота, так что <b>не выключай</b> оповещения.
-'''
 @dp.callback_query_handler(text='data_ok')
 async def waiting_start(call: CallbackQuery, state: FSMContext):
-    await call.message.edit_text(text='Отлично, место старта гонки:\n' + info)
+    await call.message.edit_text(text='Отлично, место старта гонки:\n' + start_info)
 
     # while ctime() != 'Sat Aug 29 08:00:00 2020':
     #     await asyncio.sleep(1)
     # else:
     count = await db.count_racers()
     await call.message.answer(f'Регистрация окончена, всего зарегистрировано:\n'
-                                  f' {count} человек(а).\n'
-                                  f'Ждем тебя на месте старта в 8.30')
+                              f' {count} человек(а).\n'
+                              f'Ждем тебя на месте старта в 8.30')
 
     # while ctime() != 'Sat Aug 29 8:30:00 2020':
     #     await asyncio.sleep(1)
     # else:
     await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
-    await Race.First_point.set()
-
-
+    await Race.FIRST_POINT.set()

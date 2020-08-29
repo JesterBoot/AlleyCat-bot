@@ -11,7 +11,7 @@ from keyboards.reply_kb import get_location_button, remove_keyboard
 from loader import dp, db
 
 #запрос локации на точке старта
-@dp.callback_query_handler(state=Race.First_point)
+@dp.callback_query_handler(state=Race.FIRST_POINT)
 async def get_location(call: CallbackQuery, state: FSMContext):
     await call.answer(cache_time=3)
     await call.message.delete()
@@ -27,29 +27,29 @@ async def selfie_query(message: types.Message, state: FSMContext):
     message.location["longitude"] = float(f'{message.location["longitude"]:.3f}')
     if dict(message.location) == points['Устьинский сквер, Памятник Пограничникам Отечества']:
         await message.answer('Ты на месте!\nДля подтверждения, отправь селфи')
-        await Race.Christ_the_savior.set()
+        await Race.CHRIST_THE_SAVIOR.set()
     elif dict(message.location) == points['Церковь Спаса Преображения в комплексе храма Христа Спасителя']:
         await message.answer('Ты на месте!\nДля подтверждения, отправь селфи')
-        await Race.Catholic_cathedral.set()
+        await Race.CATHOLIC_CATHEDRAL.set()
     elif dict(message.location) == points['Римско-католический Кафедральный собор Непорочного ' \
                                           'Зачатия Пресвятой Девы Марии']:
         await message.answer('Ты на месте!\nДля подтверждения, отправь селфи')
-        await Race.Allaah.set()
+        await Race.ALLAAH.set()
     elif dict(message.location) == points['Московская соборная мечеть']:
         await message.answer('Ты на месте!\nДля подтверждения, отправь селфи')
-        await Race.Seynagogue.set()
+        await Race.SEYNAGOGUE.set()
     elif dict(message.location) == points['Московская хоральная синагога']:
         await message.answer('Ты на месте!\nДля подтверждения, отправь селфи')
-        await Race.Evangelical.set()
+        await Race.EVANGELICAL.set()
     elif dict(message.location) == points['Евангелическо-лютеранский кафедральный собор святых Петра и Павла']:
         await message.answer('Ты на месте!\nДля подтверждения, отправь селфи')
-        await Race.Scientology.set()
+        await Race.SCIENTOLOGY.set()
     elif dict(message.location) == points['Московская саентологическая церковь']:
         await message.answer('Ты на месте!\nДля подтверждения, отправь селфи')
-        await Race.Mosgorbike.set()
+        await Race.MOSGORBIKE.set()
     elif dict(message.location) == points['Mosgorbike']:
         await message.answer('Ты на месте!\nДля подтверждения, отправь селфи')
-        await Race.Finish.set()
+        await Race.FINISH.set()
     else:
         await message.answer('Ты далеко от точки, попробуй еще раз', reply_markup=get_location_button)
         print(message.location)
@@ -57,7 +57,7 @@ async def selfie_query(message: types.Message, state: FSMContext):
 
 
 #подверждение фото со стейтами
-@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Christ_the_savior)
+@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.CHRIST_THE_SAVIOR)
 async def got_selfie_christ(message: types.Message, state: FSMContext):
     await state.reset_state()
     global time_start
@@ -68,7 +68,7 @@ async def got_selfie_christ(message: types.Message, state: FSMContext):
                          reply_markup=got_the_point)
 
 
-@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Catholic_cathedral)
+@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.CATHOLIC_CATHEDRAL)
 async def got_selfie_catholic(message: types.Message, state: FSMContext):
     await state.reset_state()
     await message.answer('Отличная фотка, дуй на следующую точку:\n\n'
@@ -76,7 +76,7 @@ async def got_selfie_catholic(message: types.Message, state: FSMContext):
                          reply_markup=got_the_point)
 
 
-@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Allaah)
+@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.ALLAAH)
 async def got_selfie_allah(message: types.Message, state: FSMContext):
     await state.reset_state()
     await message.answer('А теперь представь, что ты админ цуклинга.\n\n'
@@ -94,7 +94,7 @@ async def got_banned(call: CallbackQuery):
                               reply_markup=got_the_point)
 
 
-@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Seynagogue)
+@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.SEYNAGOGUE)
 async def got_selfie_seynagogue(message: types.Message, state: FSMContext):
     await state.reset_state()
     await message.answer('Отличная фотка, дуй на следующую точку:\n\n'
@@ -102,7 +102,7 @@ async def got_selfie_seynagogue(message: types.Message, state: FSMContext):
                          reply_markup=got_the_point)
 
 
-@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Evangelical)
+@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.EVANGELICAL)
 async def got_selfie_evangelical(message: types.Message, state: FSMContext):
     await state.reset_state()
     await message.answer('Отличная фотка, дуй на следующую точку:\n\n'
@@ -110,7 +110,7 @@ async def got_selfie_evangelical(message: types.Message, state: FSMContext):
                          reply_markup=got_the_point)
 
 
-@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Scientology)
+@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.SCIENTOLOGY)
 async def got_selfie_scientology(message: types.Message, state: FSMContext):
     await state.reset_state()
     await message.answer('Отличная фотка, дуй на следующую точку:\n\n'
@@ -118,7 +118,7 @@ async def got_selfie_scientology(message: types.Message, state: FSMContext):
                          reply_markup=got_the_point)
 
 
-@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Mosgorbike)
+@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.MOSGORBIKE)
 async def got_selfie_mosgorbike(message: types.Message, state: FSMContext):
     await state.reset_state()
     await message.answer('Отличная фотка, дуй на следующую точку:\n'
@@ -126,7 +126,7 @@ async def got_selfie_mosgorbike(message: types.Message, state: FSMContext):
                          reply_markup=got_the_point)
 
 '''фнишное фото у мгб и расчет времени гонки'''
-@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.Finish)
+@dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.FINISH)
 async def got_selfie_finish(message: types.Message, state: FSMContext):
     await state.finish()
     time_finish = datetime.now().strftime("%H:%M:%S")

@@ -2,12 +2,12 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
 class Race(StatesGroup):
-    First_point = State()
-    Christ_the_savior = State()
-    Catholic_cathedral = State()
-    Allaah = State()
-    Seynagogue = State()
-    Evangelical = State()
-    Scientology = State()
-    Mosgorbike = State()
-    Finish = State()
+    FIRST_POINT = State()
+    CHRIST_THE_SAVIOR = State()
+    CATHOLIC_CATHEDRAL = State()
+    ALLAAH = State()
+    SEYNAGOGUE = State()
+    EVANGELICAL = State()
+    SCIENTOLOGY = State()
+    MOSGORBIKE = State()
+    FINISH = State()
