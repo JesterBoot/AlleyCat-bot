@@ -73,11 +73,13 @@ async def winners_multispeed(dp: Dispatcher):
 async def racers_time(message: types.Message):
     result = ''
     place = 0
-    # try:
-    racers_time = dict(await db.all_racers_time())
-    for name, time in racers_time.items():
-        result += name + ' - '
-        result += str(time) + '\n'
-    place += 1
-    await message.answer(f'Общий зачет:\n\n{place} - {result}\n')
+    try:
+        racers_time = dict(await db.all_racers_time())
+        for name, time in racers_time.items():
+            result += name + ' - '
+            result += str(time) + '\n'
+        place += 1
+        await message.answer(f'Общий зачет:\n\n{place} - {result}\n')
+    except:
+        await message.answer(f'Пока никто не финишировал')
 
