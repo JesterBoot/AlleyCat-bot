@@ -11,9 +11,9 @@ DATABASE = str(os.getenv("DATABASE"))
 ip = os.getenv("ip")
 
 # id: Мой, Олега
-admins = [412112889,
-          139148302,
-          ]
+admins = [412112889,]
+          # 139148302,
+          # ]
 
 aiogram_redis = {
     'host': ip,
