@@ -77,7 +77,10 @@ async def racers_time(message: types.Message):
         racers_time = dict(await db.all_racers_time())
         for name, time in racers_time.items():
             result += name + ' - '
-            result += str(time) + '\n'
+            if str(time) == str('None'):
+                result += 'еще в пути \n'
+            else:
+                result += str(time) + '\n'
         place += 1
         await message.answer(f'Общий зачет:\n\n{place} - {result}\n')
     except:

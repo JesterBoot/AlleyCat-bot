@@ -7,6 +7,7 @@ import datetime
 
 from FSM.Race_states import Race
 from FSM.Registation_states import Registration_form
+from data.start_time import time_of_start_race, time_of_finish_registation
 from data.text_messages import start_info, rule
 from keyboards.inline_kb import bicycle_type, gender, apply_registration, check_reg_answer, are_you_ready
 from loader import dp, db
@@ -78,16 +79,16 @@ async def pravki(call: CallbackQuery, state: FSMContext):
 async def waiting_start(call: CallbackQuery, state: FSMContext):
     await call.message.edit_text(text='Отлично, место старта гонки:\n' + start_info)
 
-    while ctime() != 'Mon Aug 31 12:00:00 2020':
-        await asyncio.sleep(1)
-    else:
-        count = await db.count_racers()
-        await call.message.answer(f'Регистрация окончена, всего зарегистрировано:\n'
-                                  f' {count} человек(а).\n'
-                                  f'Ждем тебя на месте старта в 16.30')
-
-    while ctime() != 'Mon Aug 31 16:00:00 2020':
-        await asyncio.sleep(1)
-    else:
-        await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
-        await Race.FIRST_POINT.set()
+    # while ctime() != time_of_finish_registation:
+    #     await asyncio.sleep(1)
+    # else:
+    #     count = await db.count_racers()
+    #     await call.message.answer(f'Регистрация окончена, всего зарегистрировано:\n'
+    #                               f' {count} человек(а).\n'
+    #                               f'Ждем тебя на месте старта в 16.30')
+    #
+    # while ctime() != time_of_start_race:
+    #     await asyncio.sleep(1)
+    # else:
+    await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
+    await Race.FIRST_POINT.set()
