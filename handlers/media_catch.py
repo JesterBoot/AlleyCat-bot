@@ -2,9 +2,9 @@ import random
 
 from aiogram import types
 
-from data.stickers import STIKERS, ne_slishno
-from data.text_messages import audio_answer, ne_pishi
-from loader import dp
+from data.stickers import STIKERS, cant_hear_you
+from data.text_messages import audio_answer, dont_write_to_me
+from alleycat_bot.loader import dp
 
 
 @dp.message_handler(content_types=types.ContentType.STICKER)
@@ -14,10 +14,10 @@ async def catch_sticker(message: types.Message):
 
 @dp.message_handler(content_types=types.ContentType.VOICE)
 async def catch_sticker(message: types.Message):
-    await message.answer_sticker(sticker=random.choice(ne_slishno))
+    await message.answer_sticker(sticker=random.choice(cant_hear_you))
     await message.answer(text=random.choice(audio_answer))
 
 
 @dp.message_handler(content_types=types.ContentType.TEXT)
 async def catch_sticker(message: types.Message):
-    await message.answer(text=random.choice(ne_pishi))
+    await message.answer(text=random.choice(dont_write_to_me))

@@ -3,8 +3,8 @@ from aiogram import types
 from aiogram import Dispatcher
 from aiogram.dispatcher.filters.builtin import Command
 
-from data.config import admins
-from loader import dp, db
+from alleycat_bot.config import admins
+from alleycat_bot.loader import dp, db
 
 #победители фиксы
 @dp.message_handler(Command('winners_fixie'))

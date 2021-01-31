@@ -2,9 +2,9 @@
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
 
-from data.text_messages import welcome_message
+from constants.text_messages import welcome_message
 from keyboards.inline_kb import read_the_rules
-from loader import dp, db
+from alleycat_bot.loader import dp, db
 
 
 @dp.message_handler(CommandStart())

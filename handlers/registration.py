@@ -1,23 +1,17 @@
-import asyncio
-
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
-from time import time, ctime
-import datetime
 
-from FSM.Race_states import Race
 from FSM.Registation_states import Registration_form
-from data.start_time import time_of_start_race, time_of_finish_registation
-from data.text_messages import start_info, rule
-from keyboards.inline_kb import bicycle_type, gender, apply_registration, check_reg_answer, are_you_ready
-from loader import dp, db
+from data.text_messages import start_info, rules
+from keyboards.inline_kb import bicycle_type, gender, apply_registration, check_reg_answer
+from alleycat_bot.loader import dp, db
 
 
 # нажатие кнопки правила
 @dp.callback_query_handler(text='rules')
 async def rules(call: CallbackQuery):
     await call.answer(cache_time=55)
-    await call.message.edit_text(f'{rule}', reply_markup=apply_registration)
+    await call.message.edit_text(f'{rules}', reply_markup=apply_registration)
 
 
 # нажатие кнопки "Регистрация"
@@ -92,3 +86,4 @@ async def waiting_start(call: CallbackQuery, state: FSMContext):
     # else:
     # await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
     # await Race.FIRST_POINT.set()
+    '''Переписать на асинхронный код'''
