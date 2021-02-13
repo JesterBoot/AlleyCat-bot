@@ -68,7 +68,8 @@ async def pravki(call: CallbackQuery, state: FSMContext):
     await Registration_form.Sex.set()
 
 
-# информация о месте старта
+# информация о месте старта.
+# пока что закомментирована, тк еще нет даты старта и регистрация закрыта.
 @dp.callback_query_handler(text='data_ok')
 async def waiting_start(call: CallbackQuery, state: FSMContext):
     await call.message.edit_text(text=start_info)

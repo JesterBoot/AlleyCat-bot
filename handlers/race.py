@@ -10,7 +10,8 @@ from keyboards.inline_kb import got_the_point, cycling_admin
 from keyboards.reply_kb import get_location_button, remove_keyboard
 from utils.loader import dp, db
 
-#запрос локации на точке старта
+
+# запрос локации на точке старта
 @dp.callback_query_handler(state=Race.FIRST_POINT)
 async def get_location(call: CallbackQuery, state: FSMContext):
     await call.answer(cache_time=3)
@@ -20,7 +21,7 @@ async def get_location(call: CallbackQuery, state: FSMContext):
     await state.reset_state()
 
 
-#уловитель локации и сортировка по самой локации
+# уловитель локации и сортировка по самой локации
 @dp.message_handler(content_types=types.ContentType.LOCATION)
 async def selfie_query(message: types.Message, state: FSMContext):
     on_point = 'Ты на месте!\nДля подтверждения, отправь селфи'
@@ -57,7 +58,7 @@ async def selfie_query(message: types.Message, state: FSMContext):
         print(await state.get_state())
 
 
-#подверждение фото со стейтами
+# подверждение фото со стейтами
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.CHRIST_THE_SAVIOR)
 async def got_selfie_christ(message: types.Message, state: FSMContext):
     await state.reset_state()
@@ -126,7 +127,8 @@ async def got_selfie_mosgorbike(message: types.Message, state: FSMContext):
                          '<code>Mosgorbike</code>',
                          reply_markup=got_the_point)
 
-'''фнишное фото у мгб и расчет времени гонки'''
+
+'''финишное фото у мгб и расчет времени гонки'''
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.FINISH)
 async def got_selfie_finish(message: types.Message, state: FSMContext):
     await state.finish()
@@ -139,8 +141,7 @@ async def got_selfie_finish(message: types.Message, state: FSMContext):
     await message.answer_sticker(sticker='CAACAgIAAxkBAAEBNehfOYqypKm5tQW7ighPme49OflY7gACaAADq8pZIY2MuYKiZ0KSGgQ')
 
 
-
-#запрос локации
+# запрос локации
 @dp.callback_query_handler(text='got_the_point')
 async def get_location(call: CallbackQuery):
     await call.answer(cache_time=3)
