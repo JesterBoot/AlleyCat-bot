@@ -2,7 +2,7 @@
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandHelp
 
-from alleycat_bot.loader import dp
+from utils.loader import dp
 
 
 @dp.message_handler(CommandHelp())

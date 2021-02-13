@@ -2,9 +2,9 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
 
 from FSM.Registation_states import Registration_form
-from data.text_messages import start_info, rules
+from constants.text_messages import start_info, rules
 from keyboards.inline_kb import bicycle_type, gender, apply_registration, check_reg_answer
-from alleycat_bot.loader import dp, db
+from utils.loader import dp, db
 
 
 # нажатие кнопки правила

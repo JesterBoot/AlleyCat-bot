@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import Command
 
-from alleycat_bot.loader import dp, db
+from utils.loader import dp, db
 
 
 @dp.message_handler(Command('delete'))

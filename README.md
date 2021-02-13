@@ -15,14 +15,14 @@ pip3 install -r requirements.txt
 Переименуйте файл .env.example в .env и замените  следующие данные:
 ```
 BOT_TOKEN = токен вашего тг-бота
+
 PGUSER = имя юзера для базы данных
 PGPASSWORD = пароль для базы данных
-ip = ip adress
+
 admins = id админов в телеграм
 ```
 ### Запустите бота
 ```
-cd alleycat_bot
 python3 app.py
 ```
 ## Участие в проекте

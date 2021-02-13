@@ -8,7 +8,7 @@ from FSM.Race_states import Race
 from constants.locations import points
 from keyboards.inline_kb import got_the_point, cycling_admin
 from keyboards.reply_kb import get_location_button, remove_keyboard
-from alleycat_bot.loader import dp, db
+from utils.loader import dp, db
 
 #запрос локации на точке старта
 @dp.callback_query_handler(state=Race.FIRST_POINT)

@@ -2,9 +2,9 @@ import random
 
 from aiogram import types
 
-from data.stickers import STIKERS, cant_hear_you
-from data.text_messages import audio_answer, dont_write_to_me
-from alleycat_bot.loader import dp
+from constants.stickers import STIKERS, cant_hear_you
+from constants.text_messages import audio_answer, dont_write_to_me
+from utils.loader import dp
 
 
 @dp.message_handler(content_types=types.ContentType.STICKER)

@@ -1,12 +1,12 @@
-from aiogram import types
-
 from aiogram import Dispatcher
+from aiogram import types
 from aiogram.dispatcher.filters.builtin import Command
 
-from alleycat_bot.config import admins
-from alleycat_bot.loader import dp, db
+from utils.config import admins
+from utils.loader import dp, db
 
-#победители фиксы
+
+# победители фиксы
 @dp.message_handler(Command('winners_fixie'))
 async def winners_fixie(dp: Dispatcher):
     male_result = ''
@@ -37,7 +37,7 @@ async def winners_fixie(dp: Dispatcher):
                                               f'{female_place} - {female_result}')
 
 
-#победители мульти/сингл спид
+# победители мульти/сингл спид
 @dp.message_handler(Command('winners_multispeed'))
 async def winners_multispeed(dp: Dispatcher):
     male_result = ''
@@ -85,4 +85,3 @@ async def racers_time(message: types.Message):
         await message.answer(f'Общий зачет:\n\n{place} - {result}\n')
     except:
         await message.answer(f'Пока никто не финишировал')
-
