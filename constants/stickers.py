@@ -7,8 +7,7 @@ STIKERS = [
     'CAACAgIAAxkBAAEBNfhfOYu2O_47vRA7Q7NjiPvgpC_AFQACQQADq8pZIR5qydh5tpkbGgQ',
 ]
 
-
-ne_slishno = [
+cant_hear_you = [
     'CAACAgIAAxkBAAEBNf5fOYvSU3-z12_NdfsdyWNXLg1megACNgADq8pZIRE8LKnNnjwnGgQ',
     'CAACAgIAAxkBAAEBNfBfOYrw2ovs8wh0QqgHlLs-VkICDwACNQADq8pZIepTmAUSKLd2GgQ',
 ]
