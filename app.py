@@ -2,12 +2,12 @@ from utils.loader import db
 from utils.set_bot_commands import set_default_commands
 from utils.notify_admins import on_startup_notify
 
+
 async def on_startup(dp):
     try:
         await db.create_table_racers()
     except:
         pass
-
 
     await on_startup_notify(dp)
     await set_default_commands(dp)

@@ -1,9 +1,10 @@
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
 
+from FSM.Race_states import Race
 from FSM.Registation_states import Registration_form
-from constants.text_messages import start_info, rules
-from keyboards.inline_kb import bicycle_type, gender, apply_registration, check_reg_answer
+from constants.text_messages import RULES, START_INFO
+from keyboards.inline_kb import bicycle_type, gender, apply_registration, check_reg_answer, are_you_ready
 from utils.loader import dp, db
 
 
@@ -11,7 +12,7 @@ from utils.loader import dp, db
 @dp.callback_query_handler(text='rules')
 async def rules(call: CallbackQuery):
     await call.answer(cache_time=55)
-    await call.message.edit_text(f'{rules}', reply_markup=apply_registration)
+    await call.message.edit_text(f'{RULES}', reply_markup=apply_registration)
 
 
 # нажатие кнопки "Регистрация"
@@ -19,7 +20,7 @@ async def rules(call: CallbackQuery):
 async def reg(call: CallbackQuery):
     await call.message.edit_text(f'Привет {call.from_user.full_name}, укажи свой пол:',
                                  reply_markup=gender)
-    await Registration_form.Sex.set()  # добавить имя пользоваиеля и @name в бд
+    await Registration_form.Sex.set()
 
 
 # выбор пола и кнопка выбора велосипеда
@@ -60,7 +61,7 @@ async def choose_bicycle_type(call: CallbackQuery, state: FSMContext):
 
 # исправление ошибок при регистрации
 @dp.callback_query_handler(text='data_not_ok')
-async def pravki(call: CallbackQuery, state: FSMContext):
+async def correcting(call: CallbackQuery, state: FSMContext):
     await call.answer(cache_time=1)
     await state.reset_data()
     await state.reset_state()
@@ -72,7 +73,7 @@ async def pravki(call: CallbackQuery, state: FSMContext):
 # пока что закомментирована, тк еще нет даты старта и регистрация закрыта.
 @dp.callback_query_handler(text='data_ok')
 async def waiting_start(call: CallbackQuery, state: FSMContext):
-    await call.message.edit_text(text=start_info)
+    await call.message.edit_text(text=START_INFO)
 
     # while ctime() != time_of_finish_registation:
     #     await asyncio.sleep(1)
@@ -85,6 +86,6 @@ async def waiting_start(call: CallbackQuery, state: FSMContext):
     # while ctime() != time_of_start_race:
     #     await asyncio.sleep(1)
     # else:
-    # await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
-    # await Race.FIRST_POINT.set()
+    await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
+    await Race.FIRST_POINT.set()
     '''Переписать на асинхронный код'''

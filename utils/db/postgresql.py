@@ -1,5 +1,5 @@
 import asyncio
-
+import datetime
 import asyncpg
 
 from utils import config
@@ -13,6 +13,7 @@ class Database:
                                 host=config.ip))
 
     # таблица для регистрации всех гонщиков
+    # Поменять время на timestamp иизменить это в коде
     async def create_table_racers(self):
         sql = """
         CREATE TABLE IF NOT EXISTS Racers (
@@ -64,28 +65,37 @@ class Database:
     # обновление пола при регистрации
     async def update_racer_gender(self, gender: str, id: int):
         sql = '''
-        UPDATE Racers SET Gender = $1 WHERE id =$2
+        UPDATE Racers SET Gender = $1 WHERE id = $2
         '''
         return await self.pool.execute(sql, gender, id)
 
     # обновление типа велосипеда
     async def update_racer_bicycle(self, bicycle: str, id: int):
         sql = '''
-        UPDATE Racers SET Bicycle = $1 WHERE id =$2
+        UPDATE Racers SET Bicycle = $1 WHERE id = $2
         '''
         return await self.pool.execute(sql, bicycle, id)
 
     # время старта
     async def start_time(self, start_time: str, id: int):
         sql = '''
-        UPDATE Racers SET Start_time = $1 WHERE id =$2
+        UPDATE Racers SET Start_time = $1 WHERE id = $2
         '''
         return await self.pool.execute(sql, start_time, id)
+
+    async def get_start_time(self, id: int):
+        sql = '''
+        SELECT Start_time
+        FROM Racers
+        WHERE id = $1
+        ;
+        '''
+        return await self.pool.fetchrow(sql, id)
 
     # время финиша
     async def finish_time(self, finish_time: str, id: int):
         sql = '''
-        UPDATE Racers SET Finish_time = $1 WHERE id =$2
+        UPDATE Racers SET Finish_time = $1 WHERE id = $2
         '''
         return await self.pool.execute(sql, finish_time, id)
 
