@@ -6,11 +6,18 @@ from utils import config
 
 
 class Database:
-    def __init__(self, loop: asyncio.AbstractEventLoop):
-        self.pool: asyncpg.pool.Pool = loop.run_until_complete(
-            asyncpg.create_pool(user=config.PGUSER,
-                                password=config.PGPASSWORD,
-                                host=config.ip))
+    def __init__(self, pool):
+        self.pool: Pool = pool
+
+    @classmethod
+    async def create(cls):
+        pool = await asyncpg.create_pool(
+            user=config.PGUSER,
+            password=config.PGPASSWORD,
+            host=config.ip,
+            database=config.DATABASE
+        )
+        return cls(pool)
 
     # таблица для регистрации всех гонщиков
     # Поменять время на timestamp иизменить это в коде
