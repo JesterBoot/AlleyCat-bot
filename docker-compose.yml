@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    container_name:
+      database
+    image:
+      postgres:latest
+    env_file:
+      - '.env'
+    environment:
+      PG_PASSWORD: $PGPASSWORD
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+    restart:
+      always
+    ports:
+      - "5433:5433"
+    networks:
+     - my_network
+    volumes:
+      - ./postgres:/var/lib/postgresql
+
+  tgbot:
+    container_name: alleycat-bot
+    build:
+      context: .
+    command:
+      python app.py
+    networks:
+      - my_network
+    volumes:
+      - .:/src
+    restart:
+      always
+    env_file:
+      - '.env'
+    depends_on:
+      - db
+
+networks:
+  my_network:
+    driver: bridge
+
