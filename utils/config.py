@@ -7,6 +7,7 @@ load_dotenv()
 BOT_TOKEN = str(os.getenv('BOT_TOKEN'))
 PGUSER = str(os.getenv('PGUSER'))
 PGPASSWORD = str(os.getenv('PGPASSWORD'))
+DATABASE = str(os.getenv('DATABASE'))
 ip = os.getenv('ip')
 admins = int(os.getenv('ADMINS'))
 
