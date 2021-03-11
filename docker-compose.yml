@@ -9,19 +9,40 @@ services:
     env_file:
       - '.env'
     environment:
-      PG_PASSWORD: $PGPASSWORD
-      POSTGRES_HOST_AUTH_METHOD: "trust"
+      PG_PASSWORD:
+        $PGPASSWORD
+      POSTGRES_HOST_AUTH_METHOD:
+        "trust"
     restart:
       always
     ports:
-      - "5433:5433"
+      - "5432:5432"  # поменять на сервере
     networks:
      - my_network
     volumes:
       - ./postgres:/var/lib/postgresql
 
+  django:
+    container_name:
+      django_app
+    build:
+      context: .
+    command:
+      python django_app.py runserver 0.0.0.0:8000 --noreload
+    ports:
+      - 8000:8000
+    networks:
+      - my_network
+    restart:
+      always
+    env_file:
+      - '.env'
+    depends_on:
+      - db
+
   tgbot:
-    container_name: alleycat-bot
+    container_name:
+      alleycat-bot
     build:
       context: .
     command:
@@ -36,6 +57,7 @@ services:
       - '.env'
     depends_on:
       - db
+      - django
 
 networks:
   my_network:
