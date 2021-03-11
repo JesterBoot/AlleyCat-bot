@@ -1,23 +1,25 @@
 import asyncio
 import datetime
+from typing import Union
+
 import asyncpg
+from asyncpg.pool import Pool
 
 from utils import config
 
 
 class Database:
-    def __init__(self, pool):
-        self.pool: Pool = pool
+    def __init__(self):
+        self.pool: Union[Pool, None] = None
 
-    @classmethod
-    async def create(cls):
+    async def create(self):
         pool = await asyncpg.create_pool(
             user=config.PGUSER,
             password=config.PGPASSWORD,
             host=config.ip,
             database=config.DATABASE
         )
-        return cls(pool)
+        self.pool = pool
 
     # таблица для регистрации всех гонщиков
     # Поменять время на timestamp иизменить это в коде
