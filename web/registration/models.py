@@ -20,9 +20,6 @@ class Users(TimedBaseModel):
     gender = models.CharField(verbose_name="Пол", max_length=100)
     bicycle = models.CharField(verbose_name="Тип велосипеда", max_length=100)
 
-    def __repr__(self):
-        return f"({self.telegram_id})-{self.username}-{self.fullname}-{self.gender}-{self.bicycle}"
-
     def __str__(self):
         return f'{self.fullname} | {self.gender} | {self.bicycle}'
 
@@ -30,11 +27,12 @@ class Users(TimedBaseModel):
 class RacingDate(models.Model):
     class Meta:
         verbose_name = 'Время и дата начала гонки'
+        verbose_name_plural = 'Время старта гонки'
 
-    date_of_start = models.DateTimeField(verbose_name="Дата и время старта гонки", primary_key=True, blank=True)
+    date_of_start = models.DateTimeField(verbose_name="Дата и время старта гонки", null=True, blank=True)
 
     def __str__(self):
-        return f'Дата начала гонки: {self.date_of_start}'
+        return f'Дата начала гонки: {self.date_of_start}.'
 
 
 class Race(models.Model):
