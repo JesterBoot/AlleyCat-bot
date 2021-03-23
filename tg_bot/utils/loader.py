@@ -11,6 +11,6 @@ storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
 loop = asyncio.get_event_loop()
-db = loop.run_until_complete(Database.create())
+db = Database()
 
 __all__ = ["bot", "storage", "dp", "db"]

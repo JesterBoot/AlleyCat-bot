@@ -140,3 +140,7 @@ dmypy.json
 .idea/vcs.xml
 .idea/*
 .idea
+
+#stuff
+__pycache__
+.cpython-38.pyc
