@@ -29,7 +29,7 @@ SECRET_KEY = str(os.getenv('DJANGO_SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'web.registration',
+    'registration',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'web.web.urls'
+ROOT_URLCONF = 'web.urls'
 
 TEMPLATES = [
     {
@@ -72,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'web.web.wsgi.application'
+WSGI_APPLICATION = 'web.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -83,8 +83,8 @@ DATABASES = {
         'NAME': str(os.getenv('DATABASE_NAME')),
         'USER': str(os.getenv('PGUSER')),
         'PASSWORD': str(os.getenv('PGPASSWORD')),
-        'HOST': 'db',  # localhost if start without or "db" if start with docker
-        'PORT': '5432',  # поменять на сервере
+        'HOST': str(os.getenv('DATABASE_HOST')),
+        'PORT': '5432',
     }
 }
 

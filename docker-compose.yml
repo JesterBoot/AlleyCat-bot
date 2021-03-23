@@ -2,33 +2,30 @@ version: '3.8'
 
 services:
   db:
-    container_name:
-      database
-    image:
-      postgres:latest
+    container_name: database
+    image: postgres:latest
     env_file:
       - '.env'
     environment:
-      PG_PASSWORD:
-        $PGPASSWORD
-      POSTGRES_HOST_AUTH_METHOD:
-        "trust"
-    restart:
-      always
+      DATABASE_NAME: $DATABASE_NAME
+      PG_PASSWORD: $PGPASSWORD
+      PG_USER: $PGUSER
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+    restart: always
     ports:
-      - "5432:5432"  # поменять на сервере
+      - "5432:5432"
     networks:
-     - my_network
+      - my_network
     volumes:
-      - ./postgres:/var/lib/postgresql
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+      - ./pgdata:/var/lib/postgresql/data
 
   django:
-    container_name:
-      django_app
-    build:
-      context: .
+    container_name: django_app
+    build: ./web
     command:
-      python django_app.py runserver 0.0.0.0:8000 --noreload
+      bash -c "python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000 --noreload"
     ports:
       - 8000:8000
     networks:
@@ -37,14 +34,15 @@ services:
       always
     env_file:
       - '.env'
+    volumes:
+    - .:/urs/src/web
     depends_on:
       - db
 
   tgbot:
-    container_name:
-      alleycat-bot
+    container_name: tg_bot
     build:
-      context: .
+      context: ./tg-bot
     command:
       python app.py
     networks:
@@ -58,6 +56,9 @@ services:
     depends_on:
       - db
       - django
+
+volumes:
+  pgdata:
 
 networks:
   my_network:
