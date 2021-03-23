@@ -35,14 +35,14 @@ services:
     env_file:
       - '.env'
     volumes:
-    - .:/urs/src/web
+    - .:/urs/src/core
     depends_on:
       - db
 
   tgbot:
     container_name: tg_bot
     build:
-      context: ./tg-bot
+      context: tg_bot
     command:
       python app.py
     networks:

@@ -1,3 +1,3 @@
-from web.manage import main
+from core.manage import main
 
 main()
