@@ -5,9 +5,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BOT_TOKEN = str(os.getenv('BOT_TOKEN'))
-PGUSER = str(os.getenv('PGUSER'))
-PGPASSWORD = str(os.getenv('PGPASSWORD'))
-DATABASE = str(os.getenv('DATABASE_NAME'))
+DB_USER = str(os.getenv('PGUSER'))
+DB_PASSWORD = str(os.getenv('PGPASSWORD'))
+DB_NAME = str(os.getenv('DATABASE_NAME'))
+DB_HOST = str(os.getenv('DATABASE_HOST'))
+
+
+
 # ip = os.getenv('ip')
 admins = int(os.getenv('ADMINS'))
 

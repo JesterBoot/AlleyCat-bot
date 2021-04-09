@@ -12,9 +12,10 @@ class Database:
     @classmethod
     async def create(cls):
         pool = await asyncpg.create_pool(
-            user=config.PGUSER,
-            password=config.PGPASSWORD,
-            database=config.DATABASE
+            user=config.DB_USER,
+            password=config.DB_PASSWORD,
+            database=config.DB_NAME,
+            host=config.DB_HOST
         )
         return cls(pool)
 
