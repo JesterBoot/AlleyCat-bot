@@ -17,8 +17,8 @@ class Users(TimedBaseModel):
     telegram_id = models.BigIntegerField(verbose_name="ID телеграм", primary_key=True, unique=True)
     fullname = models.CharField(verbose_name="Имя пользователя", max_length=100, null=True)
     username = models.CharField(verbose_name="Username в телеграм", max_length=100, null=True)
-    gender = models.CharField(verbose_name="Пол", max_length=100)
-    bicycle = models.CharField(verbose_name="Тип велосипеда", max_length=100)
+    gender = models.CharField(verbose_name="Пол", max_length=100, blank=True)
+    bicycle = models.CharField(verbose_name="Тип велосипеда", max_length=100, blank=True)
 
     def __str__(self):
         return f'{self.fullname} | {self.gender} | {self.bicycle}'

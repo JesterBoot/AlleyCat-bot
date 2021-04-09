@@ -3,7 +3,8 @@ from aiogram.dispatcher.filters.builtin import CommandStart
 
 from constants.text_messages import WELCOME_MESSAGE
 from keyboards.inline_kb import read_the_rules
-from utils.loader import dp, db
+from utils.db.db_commands import add_racer
+from utils.loader import dp
 
 
 @dp.message_handler(CommandStart())
@@ -13,5 +14,7 @@ async def bot_start(message: types.Message):
                          parse_mode=types.ParseMode.HTML,
                          disable_web_page_preview=True
                          )
-    name = message.from_user.full_name
-    await db.add_racer(id=message.from_user.id, name=name)
+    user = await add_racer(telegram_id=message.from_user.id,
+                           fullname=message.from_user.full_name,
+                           username=message.from_user.username)
+    print(user)

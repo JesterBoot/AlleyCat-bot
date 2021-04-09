@@ -88,4 +88,3 @@ async def waiting_start(call: CallbackQuery, state: FSMContext):
     # else:
     await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
     await Race.FIRST_POINT.set()
-    '''Переписать на асинхронный код'''
