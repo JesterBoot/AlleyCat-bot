@@ -7,7 +7,7 @@ from utils.loader import dp, db
 
 
 # победители фиксы
-@dp.message_handler(Command('winners_fixie'))
+@dp.message_handler(Command('winners_fixie'), user_id=admins)
 async def winners_fixie(dp: Dispatcher):
     male_result = ''
     female_result = ''
@@ -38,7 +38,7 @@ async def winners_fixie(dp: Dispatcher):
 
 
 # победители мульти/сингл спид
-@dp.message_handler(Command('winners_multispeed'))
+@dp.message_handler(Command('winners_multispeed'), user_id=admins)
 async def winners_multispeed(dp: Dispatcher):
     male_result = ''
     female_result = ''
@@ -69,10 +69,9 @@ async def winners_multispeed(dp: Dispatcher):
 
 
 # общий зачет гонки
-@dp.message_handler(Command('results'))
+@dp.message_handler(Command('racers'))
 async def racers_time(message: types.Message):
     result = ''
-    place = 0
     try:
         racers_time = dict(await db.all_racers_time())
         for name, time in racers_time.items():
@@ -81,7 +80,14 @@ async def racers_time(message: types.Message):
                 result += 'еще в пути \n'
             else:
                 result += str(time) + '\n'
-        place += 1
-        await message.answer(f'Общий зачет:\n\n{place} - {result}\n')
+        await message.answer(f'Все участники:\n\n{result}\n')
     except:
-        await message.answer(f'Пока никто не финишировал')
+        await message.answer(f'Пока никто не зарегистрировался :(')
+
+
+# Рассылка об окончании гонки по всем учатникам
+@dp.message_handler(Command('finish_race'), user_id=admins)
+async def finish_race(message: types.Message):
+    racers = await db.select_all_racers()
+    for racer in racers:
+        await dp.bot.send_message(racer['id'], text='Гонка окончена, приезжайте к Mosgorbike на награждение.')
