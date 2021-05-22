@@ -60,7 +60,7 @@ async def choose_bicycle_type(call: CallbackQuery, state: FSMContext):
     await call.message.edit_text(f'{sex} категорию: {bicycle}', reply_markup=check_reg_answer)
     await state.reset_state(with_data=False)
     racers = await db.select_all_racers()
-    print(f'Получил всех пользователей: {racers}')  # проверка данных в бд
+    print(f'У нас новый гонщик! А вот все рейсеры: {racers}')  # проверка данных в бд
 
 
 # исправление ошибок при регистрации
@@ -74,33 +74,31 @@ async def correcting(call: CallbackQuery, state: FSMContext):
 
 
 # информация о месте старта.
-# пока что закомментирована, тк еще нет даты старта и регистрация закрыта.
 @dp.callback_query_handler(text='data_ok')
 async def waiting_start(call: CallbackQuery):
-    # now = datetime.now().strftime('%m/%d/%y %H:%M:%S')
-    # if now < time_of_finish_registration:
-    #     print(now)
-    #     await call.message.edit_text(text=START_INFO)
-    #     while True:
-    #         now_in_while = datetime.now().strftime('%m/%d/%y %H:%M:%S')
-    #         if now_in_while < time_of_finish_registration:
-    #             await asyncio.sleep(1)
-    #         else:
-    #             count = await db.count_racers()
-    #             await call.message.answer(f'Регистрация окончена, всего зарегистрировано:\n'
-    #                                       f' {count} человек(а).\n'
-    #                                       f'Ждем тебя на месте старта в 13:50.')
-    #             break
-    #     while True:
-    #         now_in_while_2 = datetime.now().strftime('%m/%d/%y %H:%M:%S')
-    #         if now_in_while_2 >= time_of_start_race:
-    #             await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
-    #             await Race.FIRST_POINT.set()
-    #             break
-    #         else:
-    #             await asyncio.sleep(1)
-    # else:
-    #     await call.message.edit_text(text=f'Регистрация была открыта до: {time_of_finish_registration}')
-    await call.message.edit_text(text=START_INFO)
-    await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
-    await Race.FIRST_POINT.set()
+    now = datetime.now().strftime('%d/%m/%y %H:%M:%S')
+    if now < FINISH_REGISTRATION_TIME:
+        await call.message.edit_text(text=START_INFO)
+        while True:
+            now_in_while = datetime.now().strftime('%d/%m/%y %H:%M:%S')
+            if now_in_while < FINISH_REGISTRATION_TIME:
+                await asyncio.sleep(1)
+            else:
+                count = await db.count_racers()
+                await call.message.answer(f'Регистрация окончена, всего зарегистрировано: '
+                                          f' {count} человек(а).\n\n'
+                                          f'Сбор в 13:30 тут: <code>Устьинский сквер, Памятник Пограничникам Отечества</code>\n'
+                                          f'Старт гонки оттуда же ровно в 14:00.')
+                break
+        while True:
+            now_in_while_2 = datetime.now().strftime('%d/%m/%y %H:%M:%S')
+            if now_in_while_2 >= START_RACE_TIME:
+                await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
+                await Race.FIRST_POINT.set()
+                break
+            else:
+                await asyncio.sleep(1)
+
+    else:
+        await call.message.edit_text(
+            text=f"Регистрация уже закрыта, следующий анонс будет <a href='vk.com/petushkislabachki'>тут</a>")
