@@ -1,6 +1,6 @@
 from aiogram.types.inline_keyboard import InlineKeyboardMarkup, InlineKeyboardButton
 
-send_to_friend = 'Регистрируйся на CyberAlleycat от MOSGORBIKE TEAM'
+send_to_friend = 'Регистрируйся на CyberAlleycat от ПЕТУШКИ_СЛАБАЧКИ'
 
 read_the_rules = InlineKeyboardMarkup(row_width=2,
                                       inline_keyboard=[
