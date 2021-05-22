@@ -62,7 +62,7 @@ async def selfie_query(message: types.Message, state: FSMContext):
         await message.answer(on_point)
         await Race.FINISH.set()
     else:
-        await message.answer('Ты далеко от главного входа, подойди ближе', reply_markup=get_location_button)
+        await message.answer('Ты далеко от точки, подойди ближе к главному входу', reply_markup=get_location_button)
 
 
 # подверждение фото со стейтами
@@ -128,17 +128,21 @@ async def got_selfie_mosgorbike(message: types.Message, state: FSMContext):
 async def got_selfie_finish(message: types.Message, state: FSMContext):
     """Финишное фото у мгб и расчет времени гонки"""
 
-    await state.finish()
-    time_start = await db.get_start_time(id=message.from_user.id)
-    time_start = time_start[0]
-    time_finish = datetime.now().strftime('%H:%M:%S')
-    total_time = datetime.strptime(time_finish, '%H:%M:%S') - datetime.strptime(time_start, '%H:%M:%S')
-    await db.finish_time(finish_time=time_finish, id=message.from_user.id)
-    await db.total_time(total_time=str(total_time), id=message.from_user.id)
+    try:
+        await state.finish()
+        time_start = await db.get_start_time(id=message.from_user.id)
+        time_start = time_start[0]
+        time_finish = datetime.now().strftime('%H:%M:%S')
+        total_time = datetime.strptime(time_finish, '%H:%M:%S') - datetime.strptime(time_start, '%H:%M:%S')
+        await db.finish_time(finish_time=time_finish, id=message.from_user.id)
+        await db.total_time(total_time=str(total_time), id=message.from_user.id)
 
-    await message.answer('Поздравляю, ты добрался до последней точки, готовься к награждению!',
-                         reply_markup=remove_keyboard)
-    await message.answer_sticker(sticker='CAACAgIAAxkBAAEBNehfOYqypKm5tQW7ighPme49OflY7gACaAADq8pZIY2MuYKiZ0KSGgQ')
+        await message.answer('Поздравляю, ты добрался до последней точки, готовься к награждению!',
+                             reply_markup=remove_keyboard)
+        await message.answer_sticker(sticker='CAACAgIAAxkBAAEBNehfOYqypKm5tQW7ighPme49OflY7gACaAADq8pZIY2MuYKiZ0KSGgQ')
+    except:
+        await message.answer('Ты не был на точке старта :(')
+
 
 
 # запрос локации
