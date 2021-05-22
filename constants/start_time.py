@@ -1,4 +1,2 @@
-import os
-
-time_of_start_race = str(os.getenv('time_of_start_race'))
-time_of_finish_registation = str(os.getenv('time_of_finish_registation'))
+FINISH_REGISTRATION_TIME = '30/05/21 13:45:00'
+START_RACE_TIME = '30/05/21 14:00:00'

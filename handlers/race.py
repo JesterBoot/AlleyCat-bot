@@ -27,7 +27,7 @@ async def selfie_query(message: types.Message, state: FSMContext):
     on_point = 'Ты на месте!\nДля подтверждения, отправь селфи 📷'
     user_latitude = float(f'{message.location["latitude"]:.5f}')
     user_longitude = float(f'{message.location["longitude"]:.5f}')
-    R = 0.0005  # Зона действия вокруг точки - 50 метров
+    R = 0.0009  # Зона действия вокруг точки - 90 метров
 
     if (user_latitude - points['Start']['latitude']) ** 2 + \
             (user_longitude - points['Start']['longitude']) ** 2 <= R ** 2:
@@ -62,16 +62,14 @@ async def selfie_query(message: types.Message, state: FSMContext):
         await message.answer(on_point)
         await Race.FINISH.set()
     else:
-        await message.answer('Ты далеко от точки, попробуй еще раз', reply_markup=get_location_button)
-        print(message.location)
-        print(await state.get_state())
+        await message.answer('Ты далеко от точки, подойди ближе к главному входу', reply_markup=get_location_button)
 
 
 # подверждение фото со стейтами
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.CHRIST_THE_SAVIOR)
 async def got_selfie_christ(message: types.Message, state: FSMContext):
     await state.reset_state()
-    start_time = datetime.now().strftime('%H:%M:%S')
+    start_time = '14:00:00'
     await db.start_time(start_time=start_time, id=message.from_user.id)
     await message.answer('Отличная фотография, первая точка:\n\n'
                          '<code>Церковь Спаса Преображения в комплексе храма Христа Спасителя</code>',
@@ -97,7 +95,7 @@ async def got_selfie_allah(message: types.Message, state: FSMContext):
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.SEYNAGOGUE)
 async def got_selfie_seynagogue(message: types.Message, state: FSMContext):
     await state.reset_state()
-    await message.answer('Отличная фотка, дуй на следующую точку:\n\n'
+    await message.answer('Хорошая фотка, следующая точка:\n\n'
                          '<code>Московская хоральная синагога</code>',
                          reply_markup=got_the_point)
 
@@ -105,7 +103,7 @@ async def got_selfie_seynagogue(message: types.Message, state: FSMContext):
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.EVANGELICAL)
 async def got_selfie_evangelical(message: types.Message, state: FSMContext):
     await state.reset_state()
-    await message.answer('Отличная фотка, дуй на следующую точку:\n\n'
+    await message.answer('Тут недалеко:\n\n'
                          '<code>Евангелическо-лютеранский кафедральный собор святых Петра и Павла</code>',
                          reply_markup=got_the_point)
 
@@ -113,7 +111,7 @@ async def got_selfie_evangelical(message: types.Message, state: FSMContext):
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.SCIENTOLOGY)
 async def got_selfie_scientology(message: types.Message, state: FSMContext):
     await state.reset_state()
-    await message.answer('Отличная фотка, дуй на следующую точку:\n\n'
+    await message.answer('Финиш уже близко:\n\n'
                          '<code>Московская саентологическая церковь</code>',
                          reply_markup=got_the_point)
 
@@ -121,7 +119,7 @@ async def got_selfie_scientology(message: types.Message, state: FSMContext):
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.MOSGORBIKE)
 async def got_selfie_mosgorbike(message: types.Message, state: FSMContext):
     await state.reset_state()
-    await message.answer('Отличная фотка, дуй на следующую точку:\n'
+    await message.answer('Топи топи топи:\n'
                          '<code>Mosgorbike</code>',
                          reply_markup=got_the_point)
 
@@ -129,17 +127,22 @@ async def got_selfie_mosgorbike(message: types.Message, state: FSMContext):
 @dp.message_handler(content_types=types.ContentType.PHOTO, state=Race.FINISH)
 async def got_selfie_finish(message: types.Message, state: FSMContext):
     """Финишное фото у мгб и расчет времени гонки"""
-    await state.finish()
-    time_start = await db.get_start_time(id=message.from_user.id)
-    time_start = time_start[0]
-    time_finish = datetime.now().strftime('%H:%M:%S')
-    total_time = datetime.strptime(time_finish, '%H:%M:%S') - datetime.strptime(time_start, '%H:%M:%S')
-    await db.finish_time(finish_time=time_finish, id=message.from_user.id)
-    await db.total_time(total_time=str(total_time), id=message.from_user.id)
 
-    await message.answer('Поздравляю, ты добрался до последней точки, готовься к награждению!',
-                         reply_markup=remove_keyboard)
-    await message.answer_sticker(sticker='CAACAgIAAxkBAAEBNehfOYqypKm5tQW7ighPme49OflY7gACaAADq8pZIY2MuYKiZ0KSGgQ')
+    try:
+        await state.finish()
+        time_start = await db.get_start_time(id=message.from_user.id)
+        time_start = time_start[0]
+        time_finish = datetime.now().strftime('%H:%M:%S')
+        total_time = datetime.strptime(time_finish, '%H:%M:%S') - datetime.strptime(time_start, '%H:%M:%S')
+        await db.finish_time(finish_time=time_finish, id=message.from_user.id)
+        await db.total_time(total_time=str(total_time), id=message.from_user.id)
+
+        await message.answer('Поздравляю, ты добрался до последней точки, готовься к награждению!',
+                             reply_markup=remove_keyboard)
+        await message.answer_sticker(sticker='CAACAgIAAxkBAAEBNehfOYqypKm5tQW7ighPme49OflY7gACaAADq8pZIY2MuYKiZ0KSGgQ')
+    except:
+        await message.answer('Ты не был на точке старта :(')
+
 
 
 # запрос локации
