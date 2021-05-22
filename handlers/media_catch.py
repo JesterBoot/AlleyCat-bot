@@ -3,7 +3,7 @@ import random
 from aiogram import types
 
 from constants.stickers import STIKERS, cant_hear_you
-from constants.text_messages import audio_answer, dont_write_to_me
+from constants.text_messages import AUDIO_ANSWERS, DONT_WRITE_TO_ME
 from utils.loader import dp
 
 
@@ -15,9 +15,9 @@ async def catch_sticker(message: types.Message):
 @dp.message_handler(content_types=types.ContentType.VOICE)
 async def catch_sticker(message: types.Message):
     await message.answer_sticker(sticker=random.choice(cant_hear_you))
-    await message.answer(text=random.choice(audio_answer))
+    await message.answer(text=random.choice(AUDIO_ANSWERS))
 
 
 @dp.message_handler(content_types=types.ContentType.TEXT)
 async def catch_sticker(message: types.Message):
-    await message.answer(text=random.choice(dont_write_to_me))
+    await message.answer(text=random.choice(DONT_WRITE_TO_ME))
