@@ -12,6 +12,8 @@ DB_HOST = str(os.getenv('DATABASE_HOST'))
 
 admins = [
     412112889,  # My
-    # 139148302,  # Oleg
-    # 108554,  # Nikita
+    139148302,  # Oleg
+    108554,  # Nikita
+    420558303,  # Senya
+    279253624,  # Ksusha
 ]
