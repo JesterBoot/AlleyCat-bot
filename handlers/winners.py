@@ -73,6 +73,7 @@ async def winners_multispeed(dp: Dispatcher):
 async def racers_time(message: types.Message):
     result = ''
     try:
+        count = await db.count_racers()
         racers_time = dict(await db.all_racers_time())
         for name, time in racers_time.items():
             result += name + ' - '
@@ -80,7 +81,7 @@ async def racers_time(message: types.Message):
                 result += 'еще в пути \n'
             else:
                 result += str(time) + '\n'
-        await message.answer(f'Все участники:\n\n{result}\n')
+        await message.answer(f'Всего {count}:\n\n{result}\n')
     except:
         await message.answer(f'Пока никто не зарегистрировался :(')
 
