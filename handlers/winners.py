@@ -81,7 +81,7 @@ async def racers_time(message: types.Message):
                 result += 'еще в пути \n'
             else:
                 result += str(time) + '\n'
-        await message.answer(f'Всего {count} участника:\n\n{result}\n')
+        await message.answer(f'Всего {count}:\n\n{result}\n')
     except:
         await message.answer(f'Пока никто не зарегистрировался :(')
 
