@@ -12,7 +12,7 @@ from utils.loader import dp, db
 
 
 # запрос локации на точке старта
-@dp.callback_query_handler(state=Race.FIRST_POINT)
+@dp.callback_query_handler(text='ready')
 async def get_location(call: CallbackQuery, state: FSMContext):
     await call.answer(cache_time=3)
     await call.message.delete()

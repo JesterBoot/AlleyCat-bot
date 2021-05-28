@@ -94,7 +94,6 @@ async def waiting_start(call: CallbackQuery):
             now_in_while_2 = datetime.now().strftime('%d/%m/%y %H:%M:%S')
             if now_in_while_2 >= START_RACE_TIME:
                 await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
-                await Race.FIRST_POINT.set()
                 break
             else:
                 await asyncio.sleep(1)
