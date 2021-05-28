@@ -3,7 +3,7 @@ from aiogram.dispatcher.filters.builtin import Command
 
 from FSM.Race_states import Race
 from constants.text_messages import RACE_MECHANIC
-from keyboards.inline_kb import are_you_ready
+from keyboards.inline_kb import are_you_ready, confirm_participation
 from utils.config import admins
 from utils.loader import dp, db
 
@@ -27,7 +27,8 @@ async def send_mechanic(message: types.Message):
     racers = await db.select_all_racers()
     if len(racers) > 0:
         for racer in racers:
-            await dp.bot.send_message(racer['id'], text=RACE_MECHANIC)
+            await dp.bot.send_message(racer['id'], text=RACE_MECHANIC,
+                                      reply_markup=confirm_participation)
     else:
         await message.answer("Пока никто не зарегистрировался.")
 
