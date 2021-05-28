@@ -50,3 +50,8 @@ got_the_point = InlineKeyboardMarkup(row_width=2,
                                      inline_keyboard=[
                                          [InlineKeyboardButton('Я на точке', callback_data='got_the_point')]
                                      ])
+
+confirm_participation = InlineKeyboardMarkup(row_width=2,
+                                             inline_keyboard=[
+                                                 [InlineKeyboardButton('Подтвердить', callback_data='data_ok')]
+                                             ])
