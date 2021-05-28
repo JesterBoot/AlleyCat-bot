@@ -41,6 +41,5 @@ async def fail(message: types.Message):
     if len(racers) > 0:
         for racer in racers:
             await dp.bot.send_message(racer['id'], 'Ты готов к гонке?', reply_markup=are_you_ready)
-            await Race.FIRST_POINT.set()
     else:
         await message.answer("Пока никто не зарегистрировался.")
