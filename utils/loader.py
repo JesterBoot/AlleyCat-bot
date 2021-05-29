@@ -12,6 +12,4 @@ dp = Dispatcher(bot, storage=storage)
 
 loop = asyncio.get_event_loop()
 db = loop.run_until_complete(Database.create())
-# комментарий для хероку
-
 __all__ = ["bot", "storage", "dp", "db"]
