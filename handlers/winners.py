@@ -91,4 +91,7 @@ async def racers_time(message: types.Message):
 async def finish_race(message: types.Message):
     racers = await db.select_all_racers()
     for racer in racers:
-        await dp.bot.send_message(racer['id'], text='Гонка окончена, приезжайте к Mosgorbike на награждение.')
+        try:
+            await dp.bot.send_message(racer['id'], text='Гонка окончена, приезжайте к Mosgorbike на награждение.')
+        except:
+            pass

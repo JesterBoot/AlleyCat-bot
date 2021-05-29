@@ -1,11 +1,6 @@
-import asyncio
-from datetime import datetime
-
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import Command
 
-from FSM.Race_states import Race
-from constants.start_time import POSTPONED_POST
 from constants.text_messages import RACE_MECHANIC, POSTPONED_TEXT
 from keyboards.inline_kb import are_you_ready, confirm_participation
 from utils.config import admins
@@ -21,7 +16,10 @@ async def send_all(message: types.Message):
     else:
         if len(racers) > 0:
             for racer in racers:
-                await dp.bot.send_message(racer['id'], mess)
+                try:
+                    await dp.bot.send_message(racer['id'], mess)
+                except:
+                    pass
         else:
             await message.answer("Пока никто не зарегистрировался.")
 
@@ -30,11 +28,16 @@ async def send_all(message: types.Message):
 async def send_mechanic(message: types.Message):
     racers = await db.select_all_racers()
     if len(racers) > 0:
+
         for racer in racers:
-            await dp.bot.send_message(racer['id'], text=RACE_MECHANIC,
-                                      reply_markup=confirm_participation)
+            try:
+                await dp.bot.send_message(racer['id'], text=RACE_MECHANIC,
+                                          reply_markup=confirm_participation)
+            except:
+                pass
     else:
-        await message.answer("Пока никто не зарегистрировался.")
+        for admin in admins:
+            await dp.bot.send_message(admin, text="Пока никто не зарегистрировался.")
 
 
 @dp.message_handler(Command('fail'), user_id=admins)
@@ -44,7 +47,10 @@ async def fail(message: types.Message):
     racers = await db.select_all_racers()
     if len(racers) > 0:
         for racer in racers:
-            await dp.bot.send_message(racer['id'], 'Ты готов к гонке?', reply_markup=are_you_ready)
+            try:
+                await dp.bot.send_message(racer['id'], 'Ты готов к гонке?', reply_markup=are_you_ready)
+            except:
+                pass
     else:
         await message.answer("Пока никто не зарегистрировался.")
 
@@ -53,6 +59,9 @@ async def send_postponed_post(message: types.Message):
     racers = await db.select_all_racers()
     if len(racers) > 0:
         for racer in racers:
-            await dp.bot.send_message(racer['id'], text=POSTPONED_TEXT)
+            try:
+                await dp.bot.send_message(racer['id'], text=POSTPONED_TEXT)
+            except:
+                pass
     else:
         print("Пока никто не зарегистрировался.")
