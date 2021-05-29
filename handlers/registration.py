@@ -1,13 +1,15 @@
 import asyncio
 from datetime import datetime
 
+from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
 
 from FSM.Race_states import Race
 from FSM.Registation_states import Registration_form
-from constants.start_time import FINISH_REGISTRATION_TIME, START_RACE_TIME
-from constants.text_messages import RULES, START_INFO
+from constants.start_time import FINISH_REGISTRATION_TIME, START_RACE_TIME, POSTPONED_POST
+from constants.text_messages import RULES, START_INFO, POSTPONED_TEXT
+from handlers.command_info import send_postponed_post
 from keyboards.inline_kb import bicycle_type, gender, apply_registration, check_reg_answer, are_you_ready
 from utils.loader import dp, db
 
@@ -79,24 +81,26 @@ async def waiting_start(call: CallbackQuery):
     now = datetime.now().strftime('%d/%m/%y %H:%M:%S')
     if now < FINISH_REGISTRATION_TIME:
         await call.message.edit_text(text=START_INFO)
-        while True:
-            now_in_while = datetime.now().strftime('%d/%m/%y %H:%M:%S')
-            if now_in_while < FINISH_REGISTRATION_TIME:
-                await asyncio.sleep(1)
-            else:
+        if now < POSTPONED_POST:
+            delta = datetime.strptime(POSTPONED_POST, '%d/%m/%y %H:%M:%S') - (
+                datetime.strptime(now, '%d/%m/%y %H:%M:%S'))
+            await asyncio.sleep(delta.seconds)
+            await send_postponed_post(types.Message)
+            now_2 = datetime.now().strftime('%d/%m/%y %H:%M:%S')
+            if now_2 < FINISH_REGISTRATION_TIME:
+                delta2 = datetime.strptime(FINISH_REGISTRATION_TIME, '%d/%m/%y %H:%M:%S') - (
+                    datetime.strptime(now_2, '%d/%m/%y %H:%M:%S'))
+                await asyncio.sleep(delta2.seconds)
                 count = await db.count_racers()
                 await call.message.answer(f'Регистрация окончена, всего зарегистрировано: '
                                           f' {count} человек(а).\n\n'
-                                          f'Сбор в 13:30 тут: <code>Устьинский сквер, Памятник Пограничникам Отечества</code>\n'
-                                          f'Старт гонки оттуда же ровно в 14:00.')
-                break
-        while True:
-            now_in_while_2 = datetime.now().strftime('%d/%m/%y %H:%M:%S')
-            if now_in_while_2 >= START_RACE_TIME:
-                await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
-                break
-            else:
-                await asyncio.sleep(1)
+                                          f'Старт гонки через 15 минут.')
+                now_3 = datetime.now().strftime('%d/%m/%y %H:%M:%S')
+                if now_3 < START_RACE_TIME:
+                    delta3 = datetime.strptime(START_RACE_TIME, '%d/%m/%y %H:%M:%S') - (
+                        datetime.strptime(now_3, '%d/%m/%y %H:%M:%S'))
+                    await asyncio.sleep(delta3.seconds)
+                    await call.message.answer('Ты готов к гонке?', reply_markup=are_you_ready)
 
     else:
         await call.message.edit_text(
