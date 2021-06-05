@@ -27,34 +27,34 @@ async def selfie_query(message: types.Message, state: FSMContext):
     on_point = 'Ты на месте!\nДля подтверждения, отправь селфи 📷'
     user_latitude = float(f'{message.location["latitude"]:.5f}')
     user_longitude = float(f'{message.location["longitude"]:.5f}')
-    R = 0.0009  # Зона действия вокруг точки - 90 метров
+    R = 0.0015  # Зона действия вокруг точки - 150 метров, R == 300
 
     if (user_latitude - points['Start']['latitude']) ** 2 + \
             (user_longitude - points['Start']['longitude']) ** 2 <= R ** 2:
         await message.answer(on_point)
         await Race.CHRIST_THE_SAVIOR.set()
+    elif (user_latitude - points['1st']['latitude']) ** 2 + \
+            (user_longitude - points['1st']['longitude']) ** 2 <= R ** 2:
+        await message.answer(on_point)
+        await Race.CATHOLIC_CATHEDRAL.set()
     elif (user_latitude - points['2nd']['latitude']) ** 2 + \
             (user_longitude - points['2nd']['longitude']) ** 2 <= R ** 2:
         await message.answer(on_point)
-        await Race.CATHOLIC_CATHEDRAL.set()
+        await Race.ALLAAH.set()
     elif (user_latitude - points['3rd']['latitude']) ** 2 + \
             (user_longitude - points['3rd']['longitude']) ** 2 <= R ** 2:
         await message.answer(on_point)
-        await Race.ALLAAH.set()
+        await Race.SEYNAGOGUE.set()
     elif (user_latitude - points['4th']['latitude']) ** 2 + \
             (user_longitude - points['4th']['longitude']) ** 2 <= R ** 2:
         await message.answer(on_point)
-        await Race.SEYNAGOGUE.set()
+        await Race.EVANGELICAL.set()
     elif (user_latitude - points['5th']['latitude']) ** 2 + \
             (user_longitude - points['5th']['longitude']) ** 2 <= R ** 2:
         await message.answer(on_point)
-        await Race.EVANGELICAL.set()
+        await Race.SCIENTOLOGY.set()
     elif (user_latitude - points['6th']['latitude']) ** 2 + \
             (user_longitude - points['6th']['longitude']) ** 2 <= R ** 2:
-        await message.answer(on_point)
-        await Race.SCIENTOLOGY.set()
-    elif (user_latitude - points['7th']['latitude']) ** 2 + \
-            (user_longitude - points['7th']['longitude']) ** 2 <= R ** 2:
         await message.answer(on_point)
         await Race.MOSGORBIKE.set()
     elif (user_latitude - points['Finish']['latitude']) ** 2 + \
@@ -72,7 +72,7 @@ async def got_selfie_christ(message: types.Message, state: FSMContext):
     start_time = '14:00:00'
     await db.start_time(start_time=start_time, id=message.from_user.id)
     await message.answer('Отличная фотография, первая точка:\n\n'
-                         '<code>Церковь Спаса Преображения в комплексе храма Христа Спасителя</code>',
+                         '<code>Главное здание МГУ имени М.В. Ломоносова</code>',
                          reply_markup=got_the_point)
 
 
@@ -80,7 +80,7 @@ async def got_selfie_christ(message: types.Message, state: FSMContext):
 async def got_selfie_catholic(message: types.Message, state: FSMContext):
     await state.reset_state()
     await message.answer('Отличная фотка, дуй на следующую точку:\n\n'
-                         '<code>Римско-католический Кафедральный собор Непорочного Зачатия Пресвятой Девы Марии</code>',
+                         '<code>Отель Украина</code>',
                          reply_markup=got_the_point)
 
 
@@ -88,7 +88,7 @@ async def got_selfie_catholic(message: types.Message, state: FSMContext):
 async def got_selfie_allah(message: types.Message, state: FSMContext):
     await state.reset_state()
     await message.answer('Езжай на следующую точку:\n\n'
-                         '<code>Московская соборная мечеть</code>',
+                         '<code>Здание МИД РФ</code>',
                          reply_markup=got_the_point)
 
 
@@ -96,7 +96,7 @@ async def got_selfie_allah(message: types.Message, state: FSMContext):
 async def got_selfie_seynagogue(message: types.Message, state: FSMContext):
     await state.reset_state()
     await message.answer('Хорошая фотка, следующая точка:\n\n'
-                         '<code>Московская хоральная синагога</code>',
+                         '<code>Высотка на Кудринской площади</code>',
                          reply_markup=got_the_point)
 
 
@@ -104,7 +104,7 @@ async def got_selfie_seynagogue(message: types.Message, state: FSMContext):
 async def got_selfie_evangelical(message: types.Message, state: FSMContext):
     await state.reset_state()
     await message.answer('Тут недалеко:\n\n'
-                         '<code>Евангелическо-лютеранский кафедральный собор святых Петра и Павла</code>',
+                         '<code>Высотка на Красныхых Воротах</code>',
                          reply_markup=got_the_point)
 
 
@@ -112,7 +112,7 @@ async def got_selfie_evangelical(message: types.Message, state: FSMContext):
 async def got_selfie_scientology(message: types.Message, state: FSMContext):
     await state.reset_state()
     await message.answer('Финиш уже близко:\n\n'
-                         '<code>Московская саентологическая церковь</code>',
+                         '<code>Гостиница Ленинградская</code>',
                          reply_markup=got_the_point)
 
 
@@ -142,7 +142,6 @@ async def got_selfie_finish(message: types.Message, state: FSMContext):
         await message.answer_sticker(sticker='CAACAgIAAxkBAAEBNehfOYqypKm5tQW7ighPme49OflY7gACaAADq8pZIY2MuYKiZ0KSGgQ')
     except:
         await message.answer('Ты не был на точке старта :(')
-
 
 
 # запрос локации

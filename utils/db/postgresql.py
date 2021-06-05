@@ -118,8 +118,7 @@ class Database:
         SELECT name, total_time
         FROM racers
         WHERE gender = 'male' AND bicycle = 'fixie'
-        ORDER BY total_time
-        LIMIT 3;
+        ORDER BY total_time;
         '''
         return await self.pool.fetch(sql)
 
@@ -128,8 +127,7 @@ class Database:
         SELECT name, total_time 
         FROM racers 
         WHERE gender = 'female' AND bicycle = 'fixie'
-        ORDER BY total_time
-        LIMIT 3;
+        ORDER BY total_time;
         '''
         return await self.pool.fetchval(sql)
 
@@ -138,8 +136,7 @@ class Database:
         SELECT name, total_time 
         FROM racers 
         WHERE gender = 'male' AND bicycle = 'multispeed'
-        ORDER BY total_time
-        LIMIT 3;
+        ORDER BY total_time;
         '''
         return await self.pool.fetchval(sql)
 
@@ -148,8 +145,7 @@ class Database:
         SELECT name, total_time
         FROM racers 
         WHERE gender = 'female' AND bicycle = 'multispeed'
-        ORDER BY total_time
-        LIMIT 3;
+        ORDER BY total_time;
         '''
         return await self.pool.fetchval(sql)
 

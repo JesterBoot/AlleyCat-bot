@@ -1,8 +1,10 @@
 from aiogram import types
+from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.builtin import Command
 
-from constants.text_messages import RACE_MECHANIC, POSTPONED_TEXT
-from keyboards.inline_kb import are_you_ready, confirm_participation
+from FSM.Registation_states import Registration_form
+from constants.text_messages import START_INFO
+from keyboards.inline_kb import are_you_ready, gender
 from utils.config import admins
 from utils.loader import dp, db
 
@@ -24,44 +26,28 @@ async def send_all(message: types.Message):
             await message.answer("Пока никто не зарегистрировался.")
 
 
-@dp.message_handler(Command('send'), user_id=admins)
-async def send_mechanic(message: types.Message):
-    racers = await db.select_all_racers()
-    if len(racers) > 0:
-
-        for racer in racers:
-            try:
-                await dp.bot.send_message(racer['id'], text=RACE_MECHANIC,
-                                          reply_markup=confirm_participation)
-            except:
-                pass
-    else:
-        for admin in admins:
-            await dp.bot.send_message(admin, text="Пока никто не зарегистрировался.")
-
-
-@dp.message_handler(Command('fail'), user_id=admins)
-async def fail(message: types.Message):
-    """ Жми команду, если ничего не сработает автоматически. """
+@dp.message_handler(Command('start_race'), user_id=admins)
+async def start_race(message: types.Message):
 
     racers = await db.select_all_racers()
     if len(racers) > 0:
         for racer in racers:
             try:
-                await dp.bot.send_message(racer['id'], 'Ты готов к гонке?', reply_markup=are_you_ready)
+                await dp.bot.send_message(racer['id'], 'Мы начинаем!\nТы готов к гонке?', reply_markup=are_you_ready)
             except:
                 pass
     else:
         await message.answer("Пока никто не зарегистрировался.")
 
 
-async def send_postponed_post(message: types.Message):
-    racers = await db.select_all_racers()
-    if len(racers) > 0:
-        for racer in racers:
-            try:
-                await dp.bot.send_message(racer['id'], text=POSTPONED_TEXT)
-            except:
-                pass
-    else:
-        print("Пока никто не зарегистрировался.")
+@dp.message_handler(Command('info'))
+async def send_info(message: types.Message):
+    await message.answer(START_INFO)
+
+
+@dp.message_handler(Command('change'))
+async def change_reg_info(message: types.Message, state: FSMContext):
+    await state.reset_data()
+    await state.reset_state()
+    await message.answer('Укажи еще раз свой пол:', reply_markup=gender)
+    await Registration_form.Sex.set()

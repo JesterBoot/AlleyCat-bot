@@ -31,9 +31,9 @@ async def winners_fixie(dp: Dispatcher):
         female_result = 'Никто не приехал'
 
     for admin in admins:
-        await dp.bot.send_message(admin, text=f'Победители фиксы, мужской зачет:\n'
+        await dp.bot.send_message(admin, text=f'Все участники фиксы, мужской зачет:\n'
                                               f'{male_place} - {male_result}')
-        await dp.bot.send_message(admin, text=f'Победители фиксы, женский зачет:\n'
+        await dp.bot.send_message(admin, text=f'Все участники, женский зачет:\n'
                                               f'{female_place} - {female_result}')
 
 
@@ -62,9 +62,9 @@ async def winners_multispeed(dp: Dispatcher):
         female_result = 'Никто не приехал'
 
     for admin in admins:
-        await dp.bot.send_message(admin, text=f'Победители мультиспид/синглы, мужской зачет:\n'
+        await dp.bot.send_message(admin, text=f'Все участники мультиспид/синглы, мужской зачет:\n'
                                               f'{male_place} - {male_result}')
-        await dp.bot.send_message(admin, text=f'Победители мультиспид/синглы, женский зачет:\n'
+        await dp.bot.send_message(admin, text=f'Все участники мультиспид/синглы, женский зачет:\n'
                                               f'{female_place} - {female_result}')
 
 
@@ -76,11 +76,11 @@ async def racers_time(message: types.Message):
         count = await db.count_racers()
         racers_time = dict(await db.all_racers_time())
         for name, time in racers_time.items():
-            result += name + ' - '
+            result += name
             if str(time) == str('None'):
-                result += 'еще в пути \n'
+                result = result
             else:
-                result += str(time) + '\n'
+                result += f' {str(time)}\n'
         await message.answer(f'Всего участников {count}:\n\n{result}\n')
     except:
         await message.answer(f'Пока никто не зарегистрировался :(')
