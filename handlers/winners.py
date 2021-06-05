@@ -78,7 +78,7 @@ async def racers_time(message: types.Message):
         for name, time in racers_time.items():
             result += name
             if str(time) == str('None'):
-                result = result
+                result += '\n'
             else:
                 result += f' {str(time)}\n'
         await message.answer(f'Всего участников {count}:\n\n{result}\n')
