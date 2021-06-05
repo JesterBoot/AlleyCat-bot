@@ -51,7 +51,13 @@ got_the_point = InlineKeyboardMarkup(row_width=2,
                                          [InlineKeyboardButton('Я на точке', callback_data='got_the_point')]
                                      ])
 
-confirm_participation = InlineKeyboardMarkup(row_width=2,
-                                             inline_keyboard=[
-                                                 [InlineKeyboardButton('Подтвердить', callback_data='data_ok')]
-                                             ])
+change_reg_data = InlineKeyboardMarkup(row_width=2,
+                                       inline_keyboard=[
+                                           [InlineKeyboardButton('Пригласи друга на гонку',
+                                                                 switch_inline_query=send_to_friend)
+                                            ],
+                                           [InlineKeyboardButton('Жду старта 🏁', callback_data='data_ok'),
+                                            InlineKeyboardButton('Изменить данные ♲',
+                                                                 callback_data='data_not_ok'),
+                                            ],
+                                       ])
