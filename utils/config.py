@@ -16,4 +16,5 @@ admins = [
     108554,  # Nikita
     420558303,  # Senya
     279253624,  # Ksusha
+    45972,  # Max
 ]
