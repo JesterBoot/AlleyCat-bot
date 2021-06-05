@@ -1,6 +1,5 @@
 from aiogram import types
 
-from handlers.start import restart_race
 from utils.loader import db
 from utils.notify_admins import on_startup_notify
 from utils.set_bot_commands import set_default_commands
@@ -14,10 +13,7 @@ async def on_startup(dp):
 
     await on_startup_notify(dp)
     await set_default_commands(dp)
-    try:
-        await restart_race(types.Message)
-    except:
-        pass
+
 
 
 if __name__ == '__main__':

@@ -51,3 +51,9 @@ async def change_reg_info(message: types.Message, state: FSMContext):
     await state.reset_state()
     await message.answer('Укажи еще раз свой пол:', reply_markup=gender)
     await Registration_form.Sex.set()
+
+
+@dp.message_handler(Command('delete_time'), user_id=412112889)
+async def delete_time_from_db(message: types.Message):
+    await db.delete_time()
+    await message.answer('Время почищено в бд')

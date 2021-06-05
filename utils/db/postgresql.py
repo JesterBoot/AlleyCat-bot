@@ -162,3 +162,9 @@ class Database:
 
     async def delete_table(self):
         await self.pool.execute('DROP TABLE Racers')
+
+    async def delete_time(self):
+        query = """
+            UPDATE Racers SET Start_time = '', Finish_time = '', Total_time = ''
+        """
+        await self.pool.execute(query)
